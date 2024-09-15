@@ -8,12 +8,13 @@ public class SquareTests {
         @Test
     void CanCalculateArea()
     {
-        double Result = Square.Area(5.0);
+        var s = new Square(5.0);
+        double Result = s.area();
         Assertions.assertEquals(25.0, Result);
     };
         @Test
     void CanCalculatePerimetr()
         {
-            Assertions.assertEquals(20.0, Square.perimetr(5.0));
+            Assertions.assertEquals(20.0, new Square(5.0).perimetr());
         }
 }
