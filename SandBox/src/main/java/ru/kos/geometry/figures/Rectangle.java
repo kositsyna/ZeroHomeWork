@@ -2,7 +2,8 @@ package ru.kos.geometry.figures;
 
 public class Rectangle {
   public static void printRectangleArea(double a, double b) {
-        System.out.println("Площадь  прямоугольник со сторонами  " + a + " и " + b + " = " + RectangleArea(a,b));
+      var Text = String.format("Площадь  прямоугольник со сторонами %f и %f = %f", a, b, RectangleArea(a,b));
+        System.out.println(Text);
     }
 
     private static double RectangleArea(double a, double b) {

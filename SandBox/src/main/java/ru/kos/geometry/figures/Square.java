@@ -3,7 +3,8 @@ package ru.kos.geometry.figures;
 public class Square {
    public static void printSquareArea(double a)
     {
-        System.out.println("Площадь  квадрата со стороной " + a + " = " + SquareArea(a));
+        String Text = String.format("Площадь  квадрата со стороной %f = %f", a, SquareArea(a));
+        System.out.println(Text);
     }
 
     private static double SquareArea(double a) {
