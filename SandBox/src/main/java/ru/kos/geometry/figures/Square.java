@@ -1,12 +1,6 @@
 package ru.kos.geometry.figures;
 
-public class Square {
-
-    private double side;
-
-    public Square(double side) {
-        this.side = side;
-    }
+public record Square (double side) {
 
     public static void printSquareArea(Square s)
     {
