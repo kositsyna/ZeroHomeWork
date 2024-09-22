@@ -20,7 +20,7 @@ public class TriangleTests {
     @Test
     void CantCreateTriangle() {
         try {
-            new Triangle(-2.0,-3.0,-4.0);
+            new Triangle(1.0,2.0,3.0);
             Assertions.fail();
         } catch (IllegalArgumentException exception){
 
