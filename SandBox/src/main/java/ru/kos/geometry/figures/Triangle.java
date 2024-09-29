@@ -42,7 +42,8 @@ public record Triangle(double sideone, double sidetwo, double sidethree)
             if (o == null || getClass() != o.getClass()) return false;
             Triangle triangle = (Triangle) o;
             return (Double.compare(sideone, triangle.sideone) == 0 && Double.compare(sidetwo, triangle.sidetwo) == 0 && Double.compare(sidethree, triangle.sidethree) == 0)
-                    ||(Double.compare(sideone, triangle.sidethree) == 0 && Double.compare(sidetwo, triangle.sideone) == 0 && Double.compare(sidethree, triangle.sidetwo) == 0);
+                    ||(Double.compare(sideone, triangle.sidethree) == 0 && Double.compare(sidetwo, triangle.sideone) == 0 && Double.compare(sidethree, triangle.sidetwo) == 0)
+                    ||(Double.compare(sideone, triangle.sidetwo) == 0 && Double.compare(sidetwo, triangle.sidethree) == 0 && Double.compare(sidethree, triangle.sideone) == 0);
         }
 
         @Override
