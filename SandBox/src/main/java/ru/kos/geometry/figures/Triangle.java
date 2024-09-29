@@ -1,5 +1,7 @@
 package ru.kos.geometry.figures;
 
+import java.util.Objects;
+
 public record Triangle(double sideone, double sidetwo, double sidethree)
     {
         public Triangle {
@@ -34,4 +36,17 @@ public record Triangle(double sideone, double sidetwo, double sidethree)
         return Math.sqrt(HalphPerimetr*(HalphPerimetr - this.sideone)*(HalphPerimetr-this.sidetwo)*(HalphPerimetr-this.sidethree));
     }
 
-}
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Triangle triangle = (Triangle) o;
+            return (Double.compare(sideone, triangle.sideone) == 0 && Double.compare(sidetwo, triangle.sidetwo) == 0 && Double.compare(sidethree, triangle.sidethree) == 0)
+                    ||(Double.compare(sideone, triangle.sidethree) == 0 && Double.compare(sidetwo, triangle.sideone) == 0 && Double.compare(sidethree, triangle.sidetwo) == 0);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(sideone, sidetwo, sidethree);
+        }
+    }

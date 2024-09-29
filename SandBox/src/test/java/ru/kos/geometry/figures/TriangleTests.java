@@ -25,7 +25,18 @@ public class TriangleTests {
         } catch (IllegalArgumentException exception){
 
         }
-
+    }
+    @Test
+    void testEquality(){
+        var r1 = new Triangle(5.0,4.0,8.0);
+        var r2 = new Triangle(5.0,4.0,8.0);
+        Assertions.assertEquals(r1,r2);
+    }
+    @Test
+    void testEquality2(){
+        var r1 = new Triangle(3.0,4.0,5.0);
+        var r2 = new Triangle(4.0,5.0,3.0);
+        Assertions.assertEquals(r1,r2);
     }
 
     }
