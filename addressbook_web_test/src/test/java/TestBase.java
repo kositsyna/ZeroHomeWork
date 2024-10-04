@@ -1,4 +1,16 @@
+<<<<<<< HEAD
+<<<<<<< Updated upstream
 import model.GroupData;
+=======
+>>>>>>> origin/main
+=======
+=======
+<<<<<<< HEAD
+import model.GroupData;
+=======
+>>>>>>> origin/main
+>>>>>>> origin/main
+>>>>>>> Stashed changes
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -17,6 +29,13 @@ public class TestBase {
 
     @BeforeEach
     public void setUp() {
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+        if (app == null){
+            app = new ApplicationManager();
+=======
+>>>>>>> Stashed changes
         if (driver == null) {
             driver = new ChromeDriver();
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
@@ -40,6 +59,7 @@ public class TestBase {
 
     }
 
+<<<<<<< HEAD
     protected void createGroup(GroupData group) {
         driver.findElement(By.name("new")).click();
         driver.findElement(By.name("group_name")).click();
@@ -48,6 +68,16 @@ public class TestBase {
         driver.findElement(By.name("group_header")).sendKeys(group.header());
         driver.findElement(By.name("group_footer")).click();
         driver.findElement(By.name("group_footer")).sendKeys(group.footer());
+=======
+    protected void createGroup(String group_name, String group_header, String group_footer) {
+        driver.findElement(By.name("new")).click();
+        driver.findElement(By.name("group_name")).click();
+        driver.findElement(By.name("group_name")).sendKeys(group_name);
+        driver.findElement(By.name("group_header")).click();
+        driver.findElement(By.name("group_header")).sendKeys(group_header);
+        driver.findElement(By.name("group_footer")).click();
+        driver.findElement(By.name("group_footer")).sendKeys(group_footer);
+>>>>>>> origin/main
         driver.findElement(By.name("submit")).click();
         driver.findElement(By.linkText("group page")).click();
     }
@@ -55,6 +85,10 @@ public class TestBase {
     protected void openGroupsPage() {
         if (!isElementPresent(By.name("new"))) {
             driver.findElement(By.linkText("groups")).click();
+<<<<<<< Updated upstream
+=======
+>>>>>>> origin/main
+>>>>>>> Stashed changes
         }
     }
 

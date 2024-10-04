@@ -41,13 +41,11 @@ public record Triangle(double sideone, double sidetwo, double sidethree)
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Triangle triangle = (Triangle) o;
-            return (Double.compare(sideone, triangle.sideone) == 0 && Double.compare(sidetwo, triangle.sidetwo) == 0 && Double.compare(sidethree, triangle.sidethree) == 0)
-                    ||(Double.compare(sideone, triangle.sidethree) == 0 && Double.compare(sidetwo, triangle.sideone) == 0 && Double.compare(sidethree, triangle.sidetwo) == 0)
-                    ||(Double.compare(sideone, triangle.sidetwo) == 0 && Double.compare(sidetwo, triangle.sidethree) == 0 && Double.compare(sidethree, triangle.sideone) == 0);
+            return Double.compare(sideone, this.sideone) == 0 && Double.compare(sidetwo, this.sidetwo) == 0 && Double.compare(sidethree, this.sidethree) == 0;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(sideone, sidetwo, sidethree);
+            return 1;
         }
     }
