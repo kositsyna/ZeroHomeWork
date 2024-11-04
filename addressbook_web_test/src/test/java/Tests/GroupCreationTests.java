@@ -8,21 +8,18 @@ public class GroupCreationTests extends TestBase {
 
     @Test
     public void CanCreateGroup() {
-        app.openGroupsPage();
-        app.createGroup(new GroupData("group name", "group header", "group footer"));
+        app.groups().createGroup(new GroupData("group name", "group header", "group footer"));
     }
 
     @Test
     public void CanCreateGroupWithEmptyName() {
-        app.openGroupsPage();
-        app.createGroup(new GroupData());
+        app.groups().createGroup(new GroupData());
     }
 
     @Test
     public void CanCreateGroupWithNameOnly() {
-        app.openGroupsPage();
         var emptyGroup = new GroupData();
         var groupWithName = emptyGroup.withName("some name");
-        app.createGroup(groupWithName); //метод, который из объекта делает объект с другим имененем
+        app.groups().createGroup(groupWithName); //метод, который из объекта делает объект с другим имененем
     }
 }
