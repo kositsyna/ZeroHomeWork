@@ -41,7 +41,12 @@ public record Triangle(double sideone, double sidetwo, double sidethree)
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Triangle triangle = (Triangle) o;
-            return Double.compare(sideone, this.sideone) == 0 && Double.compare(sidetwo, this.sidetwo) == 0 && Double.compare(sidethree, this.sidethree) == 0;
+            return (Double.compare(this.sideone, triangle.sideone) == 0 && Double.compare(this.sidetwo, triangle.sidetwo) == 0 && Double.compare(this.sidethree, triangle.sidethree) == 0)||
+            (Double.compare(this.sideone, triangle.sidetwo) == 0 && Double.compare(this.sidetwo, triangle.sideone) == 0 && Double.compare(this.sidethree, triangle.sidethree) == 0)||
+            (Double.compare(this.sideone, triangle.sideone) == 0 && Double.compare(this.sidetwo, triangle.sidethree) == 0 && Double.compare(this.sidethree, triangle.sidetwo) == 0)||
+            (Double.compare(this.sideone, triangle.sidethree) == 0 && Double.compare(this.sidetwo, triangle.sidetwo) == 0 && Double.compare(this.sidethree, triangle.sideone) == 0)||
+            (Double.compare(this.sideone, triangle.sidethree) == 0 && Double.compare(this.sidetwo, triangle.sideone) == 0 && Double.compare(this.sidethree, triangle.sidetwo) == 0);
+
         }
 
         @Override
