@@ -3,9 +3,10 @@ package model;
 public  record ContactData(String firstname, String middlename, String lastname, String nickname)
 {
 
-    public ContactData() {
+    public ContactData(String groupName, String groupHeader, String groupFooter) {
         this("","","","");
     }
+
     public ContactData withFname(String firstname) {
         return new ContactData(firstname, this.middlename, this.lastname, this.nickname);  //возвращаем НОВЫЙ объект с другим именем, но хеад и футер как уже у существующего
     }
