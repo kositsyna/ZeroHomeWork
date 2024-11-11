@@ -9,4 +9,5 @@ public class ContactCreationTest extends TestBase {
   public void canCreateContact() {
     app.contacts().createContact(new ContactData("first","middle","last","nick"));
   }
-}
+
+  }
