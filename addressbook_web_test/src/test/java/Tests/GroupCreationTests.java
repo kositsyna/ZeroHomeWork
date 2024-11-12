@@ -26,4 +26,15 @@ public class GroupCreationTests extends TestBase {
         var groupWithName = emptyGroup.withName("some name");
         app.groups().createGroup(groupWithName); //метод, который из объекта делает объект с другим имененем
     }
+
+    @Test
+    public void CanCreateMultipleGroups() {
+        int n = 5; //кол-во создаваемых групп
+        int groupCount = app.groups().getCount(); // считаем количество уже созданных групп
+        for (int i = 0 ; i < n; i++){
+            app.groups().createGroup(new GroupData(randomString(i*2), "group header", "group footer"));
+        }
+        int newgroupCount = app.groups().getCount();
+        Assertions.assertEquals(groupCount + n,newgroupCount);
+    }
 }
