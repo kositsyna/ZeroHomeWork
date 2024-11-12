@@ -83,4 +83,19 @@ public class GroupHelper extends HelperBase {
         return manager.driver.findElements(By.name("selected[]")).size(); // возвращаем количество групп
 
     }
+
+    public void removeAllGroups() {
+        openGroupsPage();
+        selectAllGroups();
+        removeSelectedGroup();
+    }
+
+    public void selectAllGroups() {
+        var countCheckBox = manager.driver.findElements(By.name("selected[]"));// Переменная, в которой храним кол-во групп
+        for (var checkbox : countCheckBox){
+            checkbox.click();
+        }
+    }
+
 }
+
