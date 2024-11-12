@@ -16,7 +16,7 @@ public class TestBase {
         app.init("chrome");
     }
 
-    public String randomString(int n){ //метод генерации рандомной строки
+    public static String randomString(int n){ //метод генерации рандомной строки
         var rnd = new Random();
         var result = "";
         for (int i = 0; i < n; i++){

@@ -3,38 +3,51 @@ package Tests;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupCreationTests extends TestBase {
 
 
-    @Test
-    public void CanCreateGroup() {
+    public static List<GroupData> groupProvider() { //метод возвращает список объектов типа груп дата
+        var result = new ArrayList<GroupData>();
+        for(var name:List.of("","group name")){
+            for(var header:List.of("","group header")){
+                for(var footer:List.of("","group footer")){
+                    result.add(new GroupData(name,header,footer));
+                }
+            }
+        }
+        for (int i = 0 ; i < 5; i++){
+            result.add(new GroupData(randomString(i*2),randomString(i*2),randomString(i*2)));
+        }
+        return result;
+    }
+
+    @ParameterizedTest
+    @MethodSource("groupProvider")  //генератор тестовых данных для групп
+    public void CanCreateMultipleGroups(GroupData group) {
         int groupCount = app.groups().getCount(); // считаем количество уже созданных групп
-        app.groups().createGroup(new GroupData("group name", "group header", "group footer"));
+        app.groups().createGroup(group);
         int newgroupCount = app.groups().getCount();
         Assertions.assertEquals(groupCount + 1,newgroupCount);
     }
 
-    @Test
-    public void CanCreateGroupWithEmptyName() {
-        app.groups().createGroup(new GroupData());
+    public static List<GroupData> negativeGroupProvider() { //негативные данные
+        var result = new ArrayList<GroupData>(List.of(
+                new GroupData("group name '","","")
+        ));
+        return result;
     }
-
-    @Test
-    public void CanCreateGroupWithNameOnly() {
-        var emptyGroup = new GroupData();
-        var groupWithName = emptyGroup.withName("some name");
-        app.groups().createGroup(groupWithName); //метод, который из объекта делает объект с другим имененем
-    }
-
-    @Test
-    public void CanCreateMultipleGroups() {
-        int n = 5; //кол-во создаваемых групп
+    @ParameterizedTest
+    @MethodSource("negativeGroupProvider")  //генератор тестовых данных для групп
+    public void canNotCreateGroup(GroupData group) {
         int groupCount = app.groups().getCount(); // считаем количество уже созданных групп
-        for (int i = 0 ; i < n; i++){
-            app.groups().createGroup(new GroupData(randomString(i*2), "group header", "group footer"));
-        }
+        app.groups().createGroup(group);
         int newgroupCount = app.groups().getCount();
-        Assertions.assertEquals(groupCount + n,newgroupCount);
+        Assertions.assertEquals(groupCount,newgroupCount);
     }
 }
