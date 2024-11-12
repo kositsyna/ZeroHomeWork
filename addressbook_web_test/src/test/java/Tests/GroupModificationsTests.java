@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class GroupModificationsTests extends TestBase{
     @Test
     void canModifyGroup(){
-        if (!app.groups().isGroupPresent())
+        if (app.groups().getCount() == 0) //если количество групп = 0, то сначала создаем новую, а потом изменяем ее наименование
         {
             app.groups().createGroup(new GroupData("", "", ""));
         }
