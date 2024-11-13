@@ -1,6 +1,10 @@
 package Manager;
 import model.GroupData;
+import org.checkerframework.checker.units.qual.A;
 import org.openqa.selenium.By;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupHelper extends HelperBase {
 
@@ -16,16 +20,16 @@ public class GroupHelper extends HelperBase {
         returnToGroupsPage();
     }
 
-    public void removeGroup() {
+    public void removeGroup(GroupData group) {
         openGroupsPage();
-        selectGroup();
+        selectGroup(group);
         removeSelectedGroup();
         returnToGroupsPage();
     }
 
     public void modifyGroup(GroupData modifiedGroup) {
         openGroupsPage();
-        selectGroup();
+        selectGroup(null);
         initGroupModification();
         fillGroupForm(modifiedGroup);
         submitGroupModification();
@@ -73,8 +77,8 @@ public class GroupHelper extends HelperBase {
 
     }
 
-    private void selectGroup() {
-        click(By.name("selected[]"));
+    private void selectGroup(GroupData group) {
+        click(By.cssSelector(String.format("input[value='%s']",group.id())));
 
     }
 
@@ -97,5 +101,16 @@ public class GroupHelper extends HelperBase {
         }
     }
 
+    public List<GroupData> getList() {
+        var groups = new ArrayList<GroupData>();
+        var spans = manager.driver.findElements(By.cssSelector("span.group")); // ищем элементы с заданными аттрибутами
+        for (var span:spans){                                                 //цикл по найденным элементам
+            var name = span.getText();                                        //  получаем название группы
+            var checkbox = span.findElement(By.name("selected[]"));          //ищем чекбокс внутри элемента span
+            var id = checkbox.getAttribute("value");                  //забираем у чекбокса значение аттрибута велью
+            groups.add(new GroupData().withId(id).withName(name));       //в список групп добавляем новый объект с заданным именем и айди
+        }
+        return groups;
+    }
 }
 
