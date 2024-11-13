@@ -50,5 +50,9 @@ public class ContactHelper extends HelperBase {
     public void returnToMainPage(){
         click(By.linkText("home"));
     }
+    public int getCount() {
+        returnToMainPage();
+        return manager.driver.findElements(By.name("selected[]")).size(); // возвращаем количество групп
 
+    }
     }
