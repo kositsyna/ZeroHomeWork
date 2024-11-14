@@ -31,10 +31,11 @@ public class GroupCreationTests extends TestBase {
     @ParameterizedTest
     @MethodSource("groupProvider")  //генератор тестовых данных для групп
     public void CanCreateMultipleGroups(GroupData group) {
-        int groupCount = app.groups().getCount(); // считаем количество уже созданных групп
+        var oldGroups= app.groups().getList(); //получаем список групп перед удалением объекта
         app.groups().createGroup(group);
-        int newgroupCount = app.groups().getCount();
-        Assertions.assertEquals(groupCount + 1,newgroupCount);
+        var newGroups = app.groups().getList();
+        var expectedList = new ArrayList<>(oldGroups); // загружаем список групп после модификации
+        expectedList.add(group);
     }
 
     public static List<GroupData> negativeGroupProvider() { //негативные данные

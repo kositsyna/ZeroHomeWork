@@ -43,6 +43,7 @@ public record Triangle(double sideone, double sidetwo, double sidethree)
             Triangle triangle = (Triangle) o;
             return (Double.compare(this.sideone, triangle.sideone) == 0 && Double.compare(this.sidetwo, triangle.sidetwo) == 0 && Double.compare(this.sidethree, triangle.sidethree) == 0)||
             (Double.compare(this.sideone, triangle.sidetwo) == 0 && Double.compare(this.sidetwo, triangle.sideone) == 0 && Double.compare(this.sidethree, triangle.sidethree) == 0)||
+            (Double.compare(this.sideone, triangle.sidetwo) == 0 && Double.compare(this.sidetwo, triangle.sidethree) == 0 && Double.compare(this.sidethree, triangle.sideone) == 0)||
             (Double.compare(this.sideone, triangle.sideone) == 0 && Double.compare(this.sidetwo, triangle.sidethree) == 0 && Double.compare(this.sidethree, triangle.sidetwo) == 0)||
             (Double.compare(this.sideone, triangle.sidethree) == 0 && Double.compare(this.sidetwo, triangle.sidetwo) == 0 && Double.compare(this.sidethree, triangle.sideone) == 0)||
             (Double.compare(this.sideone, triangle.sidethree) == 0 && Double.compare(this.sidetwo, triangle.sideone) == 0 && Double.compare(this.sidethree, triangle.sidetwo) == 0);

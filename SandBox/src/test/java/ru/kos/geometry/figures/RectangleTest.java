@@ -12,6 +12,7 @@ public class RectangleTest {
             Assertions.fail();
         } catch (IllegalArgumentException exception){}
     }
+
     @Test
     void testEquality(){
         var r1 = new Rectangle(5.0,4.0);

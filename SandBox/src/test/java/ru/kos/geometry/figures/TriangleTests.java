@@ -19,6 +19,8 @@ public class TriangleTests {
         Assertions.assertEquals(12.0, new Triangle(3.0, 4.0, 5.0).TriPerimetr());
     }
 
+
+
     @Test
     void CantCreateTriangle() {
         try {
@@ -50,6 +52,15 @@ public class TriangleTests {
         var c = 4;
         var triangle = new Triangle(a, b, c);
         var triangle1 = new Triangle(a, c, b);
+        Assertions.assertEquals(triangle, triangle1);
+    }
+    @Test
+    void testEquality5(){
+        var a = 2;
+        var b = 3;
+        var c = 4;
+        var triangle = new Triangle(a, b, c);
+        var triangle1 = new Triangle(c, a, b);
         Assertions.assertEquals(triangle, triangle1);
     }
 
