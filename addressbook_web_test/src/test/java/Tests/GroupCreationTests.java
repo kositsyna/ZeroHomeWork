@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GroupCreationTests extends TestBase {
@@ -34,8 +35,14 @@ public class GroupCreationTests extends TestBase {
         var oldGroups= app.groups().getList(); //получаем список групп перед удалением объекта
         app.groups().createGroup(group);
         var newGroups = app.groups().getList();
+        Comparator<GroupData> compareById = (o1, o2) -> {  //переменная для сортировки списков
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareById);
         var expectedList = new ArrayList<>(oldGroups); // загружаем список групп после модификации
-        expectedList.add(group);
+        expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id()).withHeader("").withFooter("")); //
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newGroups,expectedList); //сравнение списков
     }
 
     public static List<GroupData> negativeGroupProvider() { //негативные данные
@@ -47,9 +54,9 @@ public class GroupCreationTests extends TestBase {
     @ParameterizedTest
     @MethodSource("negativeGroupProvider")  //генератор тестовых данных для групп
     public void canNotCreateGroup(GroupData group) {
-        int groupCount = app.groups().getCount(); // считаем количество уже созданных групп
+        var oldGroups= app.groups().getList(); //получаем список групп перед удалением объекта
         app.groups().createGroup(group);
-        int newgroupCount = app.groups().getCount();
-        Assertions.assertEquals(groupCount,newgroupCount);
+        var newGroups = app.groups().getList();
+        Assertions.assertEquals(newGroups,oldGroups); //сравнение списков
     }
 }
