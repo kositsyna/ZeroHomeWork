@@ -1,6 +1,10 @@
 package Manager;
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
@@ -37,9 +41,7 @@ public class ContactHelper extends HelperBase {
 
     public void fillContactform(ContactData contact){
         type(By.name("firstname"),contact.firstname());
-        type(By.name("middlename"),contact.middlename());
         type(By.name("lastname"),contact.lastname());
-        type(By.name("nickname"),contact.nickname());
     }
 
     public void submitContactCreation()
@@ -55,4 +57,20 @@ public class ContactHelper extends HelperBase {
         return manager.driver.findElements(By.name("selected[]")).size(); // возвращаем количество групп
 
     }
+    public List<ContactData> getList() {
+        var contacts = new ArrayList<ContactData>();// Создаем пустой список для контактов
+        var tds = manager.driver.findElements(By.xpath("//table[@class='sortcompletecallback-applyZebra']/tbody/tr"));//получить со страницы список элементов, которые содержат информацию о контактах
+        for (var row: tds) {
+            var cells = row.findElements(By.tagName("td"));
+            if (!cells.isEmpty()) {
+                var firstname = cells.get(2).getText();
+                var lastname = cells.get(1).getText();
+                var checkbox = cells.get(0).findElement(By.name("selected[]"));
+                var id = checkbox.getAttribute("value");
+                contacts.add(new ContactData().withId(id).withFname(firstname).withLname(lastname));// в список контактов добавляем новый объект
+            }
+        }
+        return contacts;
+    }
+
     }

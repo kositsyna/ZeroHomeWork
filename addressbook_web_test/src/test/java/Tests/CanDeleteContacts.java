@@ -10,7 +10,7 @@ public class CanDeleteContacts extends TestBase {
 
     if (!app.contacts().isContactPresent())
     {
-      app.contacts().createContact(new ContactData("first","middle","last","nick"));
+      app.contacts().createContact(new ContactData());
     }
     app.contacts().removeContact();
 

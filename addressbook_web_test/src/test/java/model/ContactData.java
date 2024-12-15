@@ -1,23 +1,21 @@
 package model;
 
-public  record ContactData(String firstname, String middlename, String lastname, String nickname)
+public  record ContactData(String id, String firstname,String lastname)
 {
 
-    public ContactData(String groupName, String groupHeader, String groupFooter) {
-        this("","","","");
+    public ContactData() {
+        this("","","");
+    }
+    public ContactData withId(String id) {
+        return new ContactData(id, this.firstname,this.lastname);
+    }
+    public ContactData withFname(String firstname) {
+        return new ContactData(this.id, firstname,this.lastname);  //возвращаем НОВЫЙ объект
     }
 
-    public ContactData withFname(String firstname) {
-        return new ContactData(firstname, this.middlename, this.lastname, this.nickname);  //возвращаем НОВЫЙ объект с другим именем, но хеад и футер как уже у существующего
-    }
-    public ContactData withMname(String middlename) {
-        return new ContactData(this.firstname, middlename, this.lastname, this.nickname);
-    }
     public ContactData withLname(String lastname) {
-        return new ContactData(this.firstname, this.middlename, lastname, this.nickname);
+        return new ContactData(this.id, this.firstname, lastname);
     }
-    public ContactData withNname(String nickname) {
-        return new ContactData(this.firstname, this.middlename, this.lastname, nickname);
-    }
+
 }
 
