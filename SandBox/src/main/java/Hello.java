@@ -7,6 +7,7 @@ public class Hello {
         var ConfigFile = new File("sandbox/build.gradle");
         System.out.println(ConfigFile.getAbsolutePath());
         System.out.println(ConfigFile.exists());
+        System.out.println(new File("").getAbsolutePath()); //абсолютный путь рабочей директории
     }
 
 

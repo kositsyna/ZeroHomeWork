@@ -14,6 +14,7 @@ public class ContactHelper extends HelperBase {
     private void fillContactForm(ContactData contact) {//метод для изменения данных контакта
         type(By.name("firstname"), contact.firstname());
         type(By.name("lastname"), contact.lastname());
+        attach(By.name("photo"), contact.photo());
     }
 
     public void createContact(ContactData contact) {
@@ -42,7 +43,7 @@ public class ContactHelper extends HelperBase {
 
     public void checkIsContact() { // если на странице нет контактов, то создадим
         if (!manager.isElementPresent(By.name("selected[]"))) {
-            createContact(new ContactData("", "lastname99", "firstname88"));//вызов метода создания контакта
+            createContact(new ContactData("", "lastname99", "firstname88",""));//вызов метода создания контакта
         }
     }
 
@@ -54,7 +55,7 @@ public class ContactHelper extends HelperBase {
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {//метод для модификации контакта
         selectContact(contact);//выбрать контакт (отметить галочкой)
-        initContactModification();//нажать кнопку модификации Edit
+        initContactModification(contact);//нажать кнопку модификации Edit
         fillContactForm(modifiedContact);//заполнить форму данными, которые содержатся в переданном объекте
         submitContactModification();//сохраняем форму  по кнопке Update
         returnToMainPage();//возврат на страницу контактов
@@ -76,8 +77,8 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("add new"));
     }
 
-    private void initContactModification() {
-        click(By.cssSelector("[title='Edit']"));
+    private void initContactModification(ContactData contact) {
+        click(By.cssSelector(String.format("[href='edit.php?id=%s']",contact.id())));
     }
 
 

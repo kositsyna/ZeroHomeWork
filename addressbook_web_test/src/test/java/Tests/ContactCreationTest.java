@@ -1,5 +1,6 @@
 package Tests;
 
+import common.CommonFunctions;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,19 +14,26 @@ public class ContactCreationTest extends TestBase {
     public static List<ContactData> contactProvider() {//возвращает список объектов ContactData
         var result = new ArrayList<ContactData>();//инициализируем создаваемый список соответствующими значениями
         for (var firstname : List.of("", "firstname")) {//цикл, который перебирает два возможных значения (пустая и НЕ пустая строка)
-            for (var lastname : List.of("", "lastname")) {//для каждой пары перебираем возможные значения lastname
-                {
-                    result.add(new ContactData().withFname(firstname).withLname(lastname));//добавляем значение в список генерируемых объектов. Идентификаторов пока нет
+            for (var lastname : List.of("", "lastname")) {
+                for (var photo : List.of("", "photo")) {
+                    {//для каждой пары перебираем возможные значения lastname
+                        {
+                            result.add(new ContactData().withFname(firstname).withLname(lastname).withPhoto(photo));//добавляем значение в список генерируемых объектов. Идентификаторов пока нет
+                        }
+                    }
                 }
+                for (int i = 0; i < 5; i++) {
+                    result.add(new ContactData()
+                            .withFname(CommonFunctions.randomString(i * 10))
+                            .withLname(CommonFunctions.randomString(i * 10))
+                            .withPhoto(randomFile("src/test/resources/images")));//создание контакта. В качестве наименование будет рандомное randomString длины i*10
+                }
+
             }
-        }
-        for (int i = 0; i < 5; i++) {
-            result.add(new ContactData()
-                    .withFname(randomString(i * 10))
-                    .withLname(randomString(i * 10)));//создание контакта. В качестве наименование будет рандомное randomString длины i*10
         }
         return result;
     }
+
 
     @ParameterizedTest
     @MethodSource("contactProvider")

@@ -14,7 +14,7 @@ public class CanDeleteContacts extends TestBase {
     public void canRemoveContact() {
         app.contacts().openContactPresent();
         if (app.contacts().getCount() == 0) {
-            app.contacts().createContact(new ContactData("", "lastname1", "firstname1"));//вызов метода создания контакта
+            app.contacts().createContact(new ContactData("", "lastname1", "firstname1",""));//вызов метода создания контакта
         }
         var oldContacts = app.contacts().getList();
         var rand = new Random();
