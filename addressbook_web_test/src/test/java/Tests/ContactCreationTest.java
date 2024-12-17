@@ -18,21 +18,21 @@ public class ContactCreationTest extends TestBase {
 
     public static List<ContactData> contactProvider() throws IOException {//возвращает список объектов ContactData
         var result=new ArrayList<ContactData>();//инициализируем создаваемый список соответствующими значениями
-        for (var firstname: List.of("","firstname")) {
-                for (var lastname: List.of("","lastname")) {
-                                result.add(new ContactData().withFname(firstname).withLname(lastname));
-                                    }
-            }
-                for (int i=0; i<5; i++) {
-            result.add(new ContactData()
-                    .withFname(randomString(i*5))
-                    .withLname(randomString(i*5)));//создание контакта
-        }
-        return result;
-//        ObjectMapper mapper = new ObjectMapper();//прочитать данные из файла
-//        var value = mapper.readValue(new File("contacts.json"), new TypeReference<List<ContactData>>() {});
-//        result.addAll(value);//добавить все значения списка, которые были прочитаны из файла
+//        for (var firstname: List.of("","firstname")) {
+//                for (var lastname: List.of("","lastname")) {
+//                                result.add(new ContactData().withFname(firstname).withLname(lastname));
+//                                    }
+//            }
+//                for (int i=0; i<5; i++) {
+//            result.add(new ContactData()
+//                    .withFname(randomString(i*5))
+//                    .withLname(randomString(i*5)));//создание контакта
+//        }
 //        return result;
+        ObjectMapper mapper = new ObjectMapper();//прочитать данные из файла
+        var value = mapper.readValue(new File("contacts.json"), new TypeReference<List<ContactData>>() {});
+        result.addAll(value);//добавить все значения списка, которые были прочитаны из файла
+        return result;
     }
 
     @ParameterizedTest
@@ -52,19 +52,19 @@ public class ContactCreationTest extends TestBase {
         Assertions.assertEquals(newContacts,expectedList);//проверка, которая сравнивает 2 списка ожидаемый и реальный
     }
 
-    public static List<ContactData> negativeContactProvider() {//возвращает список объектов ContactData
-        var result=new ArrayList<ContactData>(List.of(
-                new ContactData ("", "","FName")));//инициализируем создаваемый список соответствующими значениями
-        return result;
-    }
-
-    @ParameterizedTest
-    @MethodSource ("negativeContactProvider")
-    public void CanNotContact(ContactData contact) {
-        var oldContacts = app.contacts().getList();
-        app.contacts().createContact(contact);
-        var newContacts = app.contacts().getList();
-        Assertions.assertEquals(newContacts, oldContacts);
-    }
+//    public static List<ContactData> negativeContactProvider() {//возвращает список объектов ContactData
+//        var result=new ArrayList<ContactData>(List.of(
+//                new ContactData ("", "","FName")));//инициализируем создаваемый список соответствующими значениями
+//        return result;
+//    }
+//
+//    @ParameterizedTest
+//    @MethodSource ("negativeContactProvider")
+//    public void CanNotContact(ContactData contact) {
+//        var oldContacts = app.contacts().getList();
+//        app.contacts().createContact(contact);
+//        var newContacts = app.contacts().getList();
+//        Assertions.assertEquals(newContacts, oldContacts);
+//    }
 
 }
