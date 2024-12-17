@@ -5,8 +5,15 @@ import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.Buffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -29,8 +36,19 @@ public class ContactCreationTest extends TestBase {
 //                    .withLname(randomString(i*5)));//создание контакта
 //        }
 //        return result;
+        var json = "";
+        try (var reader = new FileReader("contacts.json"); //читаем файл построчно
+            var breader = new BufferedReader(reader)){
+           var line = breader.readLine();
+           while (line != null){
+               json = json + line;
+               line = breader.readLine();
+           }
+
+        }
+        //var json = Files.readString(Paths.get("contacts.json")); //за один вызов вычитываем весь файл
         ObjectMapper mapper = new ObjectMapper();//прочитать данные из файла
-        var value = mapper.readValue(new File("contacts.json"), new TypeReference<List<ContactData>>() {});
+        var value = mapper.readValue(json, new TypeReference<List<ContactData>>() {}); //анализируем содержимое прочитанного файла
         result.addAll(value);//добавить все значения списка, которые были прочитаны из файла
         return result;
     }

@@ -7,7 +7,9 @@ import model.ContactData;
 import model.GroupData;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 
 import static common.CommonFunctions.randomString;
@@ -78,7 +80,12 @@ public class Generator {
         if ("json".equals(format)){
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            mapper.writeValue(new File(output), data);
+            var json = mapper.writeValueAsString(data); //Файл будет помещен в переменную json
+
+           try (var writer = new FileWriter(output)){
+               writer.write(json); //пишем строку в файл
+           }
+           // writer.close();//закрываем файл
         } else {
             throw new IllegalArgumentException("Неизвестный формат данных" + format);
         }
