@@ -40,10 +40,10 @@ public class ContactHelper extends HelperBase {
     }
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {//метод для модификации контакта
-        selectContact(contact);//выбрать контакт (отметить галочкой)
-        initContactModification(contact);//нажать кнопку модификации Edit
+        selectContact(contact);//выбрать
+        initContactModification(contact);//нажать кнопку модификации
         fillContactForm(modifiedContact);//заполнить форму данными, которые содержатся в переданном объекте
-        submitContactModification();//сохраняем форму  по кнопке Update
+        submitContactModification();//сохраняем форму
         returnToHomePage();//возврат на страницу контактов
     }
 
@@ -54,7 +54,7 @@ public class ContactHelper extends HelperBase {
     }
 
     private void submitContactCreation() {//сохранение данных по контакту
-        click(By.xpath("(//input[@name=\'submit\'])"));//driver.findElement(By.xpath("(//input[@name=\'submit\'])[2]")).click();
+        click(By.xpath("(//input[@name=\'submit\'])"));
     }
 
     private void initContactCreation() {//метод по открытию формы с новым контактом
@@ -74,9 +74,9 @@ public class ContactHelper extends HelperBase {
         click(By.cssSelector(String.format("input[value='%s']",contact.id())));// выбор контакта
     }
     private void initContactModification(ContactData contact) {
-        click(By.cssSelector("[title='Edit']"));
+        click(By.cssSelector(String.format("[href='edit.php?id=%s']",contact.id())));
     }
-    
+
     private void fillContactForm(ContactData contact) {//метод для изменения данных контакта
         type(By.name("firstname"), contact.firstname());
         type(By.name("lastname"), contact.lastname());
@@ -91,8 +91,8 @@ public class ContactHelper extends HelperBase {
 
     public int getCount() {//метод для подсчета элементов
         openContactPresent();
-        return manager.driver.findElements(By.name("selected[]")).size(); //метод, который находит много элеметов. Возвращает список. size()- возвращает размер списка
-    }
+        return manager.driver.findElements(By.name("selected[]")).size();     }
+
 
     public void removeAllContacts() {//метод для удаления всх контактов
         openContactPresent();
