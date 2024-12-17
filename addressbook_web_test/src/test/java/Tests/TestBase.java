@@ -2,7 +2,6 @@ package Tests;
 
 import Manager.ApplicationManager;
 import org.junit.jupiter.api.BeforeEach;
-
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Random;

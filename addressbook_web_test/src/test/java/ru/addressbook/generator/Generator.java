@@ -3,11 +3,14 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import model.ContactData;
 import model.GroupData;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static Tests.TestBase.randomFile;
 import static common.CommonFunctions.randomString;
 
 
@@ -54,15 +57,21 @@ public class Generator {
     private Object generateGroups() {
         var result = new ArrayList<GroupData>();
         for (int i = 0 ; i < count; i++){
-            result.add(new GroupData().withName(randomString(i*2))
+            result.add(new GroupData()
+                    .withName(randomString(i*2))
                     .withFooter(randomString(i*2))
                     .withHeader(randomString(i*2)));
         }
         return result;
     }
-
     private Object generateContacts() {
-        return null;
+        var result = new ArrayList<ContactData>();//создаем список объектов ContactData
+        for (int i = 0; i<count; i++) {//заполняем список в цикле
+            result.add(new ContactData()
+                    .withFname(randomString(i*5))//создание контакта.
+                    .withLname(randomString(i*5)));}                    //.withPhoto(randomFile("src/test/resources/images")));
+
+        return result;
     }
 
     private void save(Object data) throws IOException {

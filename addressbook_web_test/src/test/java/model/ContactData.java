@@ -1,25 +1,19 @@
 package model;
 
-public  record ContactData(String id, String firstname,String lastname, String photo)
+public  record ContactData(String id, String lastname, String firstname)
 {
 
     public ContactData() {
-        this("","","","");
+        this("","","");
     }
-    public ContactData withId(String id) {
-        return new ContactData(id, this.firstname,this.lastname,this.photo);
-    }
+    public ContactData withId(String id) {return new ContactData(id, this.lastname, this. firstname);}//метод,
+
     public ContactData withFname(String firstname) {
-        return new ContactData(this.id, firstname,this.lastname,this.photo);  //возвращаем НОВЫЙ объект
+        return new ContactData(this.id,this.lastname, firstname);
     }
 
     public ContactData withLname(String lastname) {
-        return new ContactData(this.id, this.firstname, lastname,this.photo);
+        return new ContactData(this.id, lastname, this.firstname);
     }
-    public ContactData withPhoto(String photo) {
-        return new ContactData(this.id, this.firstname,this.lastname,photo);
-    }
-
-
 }
 

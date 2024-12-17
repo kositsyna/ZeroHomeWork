@@ -1,11 +1,7 @@
 package Manager;
-
 import org.openqa.selenium.By;
-
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static java.nio.file.Path.*;
 
 public class HelperBase {
 
@@ -24,7 +20,8 @@ public class HelperBase {
         manager.driver.findElement(locator).clear();
         manager.driver.findElement(locator).sendKeys(text);
     }
-    protected void attach(By locator,String file){
+
+    protected void attach(By locator, String file) {
         manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString()); //класс, помогающий работать с путями
     }
 }
