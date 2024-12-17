@@ -1,130 +1,4 @@
-//package Manager;
-//import model.ContactData;
-//import org.openqa.selenium.By;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//
-//public class ContactHelper extends HelperBase {
-//
-//    public ContactHelper(ApplicationManager manager) {
-//        super(manager);
-//    }
-//    private void fillContactForm(ContactData contact) {//метод для изменения данных контакта
-//        type(By.name("firstname"), contact.firstname());
-//        type(By.name("lastname"), contact.lastname());
-//        attach(By.name("photo"), contact.photo());
-//    }
-//
-//    public void createContact(ContactData contact) {
-//        openContactPage();
-//        initContactCreation();
-//        fillContactForm(contact);
-//        submitContactCreation();
-//        returnToMainPage();
-//    }
-//
-//    public void removeContact(ContactData contact) {
-//        selectContact();
-//        removeSelectedContact();
-//        returnToMainPage();
-//    }
-//
-//    public boolean isContactPresent() {
-//        return manager.isElementPresent(By.name("selected[]"));
-//    }
-//
-//    public void openContactPresent() {
-//        if (manager.isElementPresent(By.xpath("(//input[@name=\'Delete\'])"))) {
-//            click(By.linkText("home"));
-//        }
-//    }
-//
-//    public void openContactPage() {//открыть страницу создания нового контакта
-//        if (!manager.isElementPresent(By.xpath("(//input[@name=\'submit\'])"))) {//если на странице есть кнопка submit (ENTER), то никакой переход делать не требуется
-//            initContactCreation();
-//        }
-//    }
-//
-//    public void checkIsContact() { // если на странице нет контактов, то создадим
-//        if (!manager.isElementPresent(By.name("selected[]"))) {
-//            createContact(new ContactData("", "lastname99", "firstname88",""));//вызов метода создания контакта
-//        }
-//    }
-//
-//    /*public void fillContactform(ContactData contact){
-//        type(By.name("firstname"),contact.firstname());
-//        type(By.name("lastname"),contact.lastname());
-//    }*/
-//
-//
-//    public void modifyContact(ContactData contact, ContactData modifiedContact) {//метод для модификации контакта
-//        selectContact();//выбрать контакт (отметить галочкой)
-//        initContactModification(contact);//нажать кнопку модификации Edit
-//        fillContactForm(modifiedContact);//заполнить форму данными, которые содержатся в переданном объекте
-//        submitContactModification();//сохраняем форму  по кнопке Update
-//        returnToMainPage();//возврат на страницу контактов
-//    }
-//
-//   public void selectContact() {
-//        click(By.name("selected[]"));
-//    }
-//
-////    private void selectContact(ContactData contact) {
-////        click(By.cssSelector(String.format("input[value='%s']",contact.id())));// выбор контакта
-////    }
-//
-//    public void removeSelectedContact() {
-//        click(By.xpath("//input[@value=\'Delete\']"));
-//    }
-//
-//    public void initContactCreation() {
-//        click(By.linkText("add new"));
-//    }
-//
-//    private void initContactModification(ContactData contact) {
-//        click(By.cssSelector(String.format("edit.php",contact.id())));
-//    }
-//
-//
-//    public void submitContactCreation() {
-//        click(By.name("submit"));
-//    }
-//
-//    public void submitContactModification() {
-//        click(By.name("update"));
-//    }
-//
-//    public void returnToMainPage() {
-//        click(By.linkText("home page")); // <a href="index.php">home page</a>
-//    }
-//
-//    public int getCount() {
-//        returnToMainPage();
-//        return manager.driver.findElements(By.name("selected[]")).size(); // возвращаем количество групп
-//
-//    }
-//
-//    public List<ContactData> getList() {
-//        var contacts = new ArrayList<ContactData>();// Создаем пустой список для контактов
-//        var tds = manager.driver.findElements(By.xpath("//table[@class='sortcompletecallback-applyZebra']/tbody/tr"));//получить со страницы список элементов, которые содержат информацию о контактах
-//        for (var row : tds) {
-//            var cells = row.findElements(By.tagName("td"));
-//            if (!cells.isEmpty()) {
-//                var firstname = cells.get(2).getText();
-//                var lastname = cells.get(1).getText();
-//                var checkbox = cells.get(0).findElement(By.name("selected[]"));
-//                var id = checkbox.getAttribute("value");
-//                contacts.add(new ContactData().withId(id).withFname(firstname).withLname(lastname));// в список контактов добавляем новый объект
-//            }
-//        }
-//        return contacts;
-//    }
-//
-//}
-
-
-package manager;
+package Manager;
 
 import Manager.ApplicationManager;
 import Manager.HelperBase;
@@ -200,9 +74,9 @@ public class ContactHelper extends HelperBase {
         click(By.cssSelector(String.format("input[value='%s']",contact.id())));// выбор контакта
     }
     private void initContactModification(ContactData contact) {
-        click(By.cssSelector(String.format("[href='edit.php?id=%s']",contact.id())));//выбор карандаша для редактирования контакта
-
+        click(By.cssSelector("[title='Edit']"));
     }
+    
     private void fillContactForm(ContactData contact) {//метод для изменения данных контакта
         type(By.name("firstname"), contact.firstname());
         type(By.name("lastname"), contact.lastname());

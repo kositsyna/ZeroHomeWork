@@ -10,7 +10,7 @@ public class ApplicationManager {
     public WebDriver driver;
     private LoginHelper session;
     private GroupHelper groups;
-    private manager.ContactHelper contacts;
+    private ContactHelper contacts;
 
     public void init(String browser) {
         if (driver == null) {
@@ -42,9 +42,9 @@ public class ApplicationManager {
         return groups;
     }
 
-    public manager.ContactHelper contacts() {
+    public ContactHelper contacts() {
         if (contacts == null) {
-            contacts = new manager.ContactHelper(this);
+            contacts = new ContactHelper(this);
         }
         return contacts;
     }

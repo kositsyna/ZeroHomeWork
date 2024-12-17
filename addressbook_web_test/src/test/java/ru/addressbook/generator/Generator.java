@@ -10,8 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static Tests.TestBase.randomFile;
 import static common.CommonFunctions.randomString;
+
 
 
 public class Generator {
@@ -65,12 +65,12 @@ public class Generator {
         return result;
     }
     private Object generateContacts() {
-        var result = new ArrayList<ContactData>();//создаем список объектов ContactData
-        for (int i = 0; i<count; i++) {//заполняем список в цикле
+        var result = new ArrayList<ContactData>();
+        for (int i = 0; i<count; i++) {
             result.add(new ContactData()
-                    .withFname(randomString(i*5))//создание контакта.
-                    .withLname(randomString(i*5)));}                    //.withPhoto(randomFile("src/test/resources/images")));
-
+                    .withFname(randomString(i*2))
+                    .withLname(randomString(i*2)));}
+        //.withPhoto(randomFile("src/test/resources/images")));
         return result;
     }
 
