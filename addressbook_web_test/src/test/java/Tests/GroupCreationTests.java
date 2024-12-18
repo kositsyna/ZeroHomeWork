@@ -31,21 +31,30 @@ public class GroupCreationTests extends TestBase {
       result.addAll(value);
         return result;
     }
+    public static List<GroupData> singleRandomGroup() { //создание одной группы
+        return List.of(new GroupData()
+                .withName(CommonFunctions.randomString(10))
+                .withHeader(CommonFunctions.randomString(20))
+                .withFooter(CommonFunctions.randomString(30)));
+
+    }
 
     @ParameterizedTest
-    @MethodSource("groupProvider")  //генератор тестовых данных для групп
-    public void CanCreateMultipleGroups(GroupData group) {
-        var oldGroups= app.groups().getList(); //получаем список групп перед удалением объекта
+    @MethodSource("singleRandomGroup")  //генератор тестовых данных для групп
+    public void CanCreateGroup(GroupData group) {
+        var oldGroups= app.jdbc().getGroupList(); //получаем список групп перед удалением объекта
         app.groups().createGroup(group);
-        var newGroups = app.groups().getList();
+        var newGroups = app.jdbc().getGroupList();
         Comparator<GroupData> compareById = (o1, o2) -> {  //переменная для сортировки списков
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newGroups.sort(compareById);
         var expectedList = new ArrayList<>(oldGroups); // загружаем список групп после модификации
-        expectedList.add(group.withId(newGroups.get(newGroups.size()-1).id()).withHeader("").withFooter("")); //
+        var maxId = newGroups.get(newGroups.size()-1).id();
+        expectedList.add(group.withId(maxId)); //
         expectedList.sort(compareById);
         Assertions.assertEquals(newGroups,expectedList); //сравнение списков
+        
     }
 
     public static List<GroupData> negativeGroupProvider() { //негативные данные
