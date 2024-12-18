@@ -1,6 +1,8 @@
 package Manager;
 
+import Manager.hbm.ContactRecord;
 import Manager.hbm.GroupRecord;
+import model.ContactData;
 import model.GroupData;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
@@ -16,15 +18,15 @@ public class HibernateHelper extends HelperBase {
     public HibernateHelper(ApplicationManager manager) {
         super(manager);
             sessionFactory =  new Configuration()
-                   // .addAnnotatedClass(Book.class)
+                    .addAnnotatedClass(ContactRecord.class)
                     .addAnnotatedClass(GroupRecord.class)
-                    .setProperty(AvailableSettings.JAKARTA_JDBC_URL, "jdbc:mysql://localhost/addressbook")
-                    .setProperty(AvailableSettings.JAKARTA_JDBC_USER, "root")
+                    .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
+                    .setProperty(AvailableSettings.USER, "root")
                     .setProperty(AvailableSettings.JAKARTA_JDBC_PASSWORD, "")
                     .buildSessionFactory();
 
 }
-static List<GroupData> convertList(List<GroupRecord> records){
+static List<GroupData> convertListC(List<GroupRecord> records){
         List<GroupData> result  = new ArrayList<>();
         for (var record : records){
             result.add(convert(record));
@@ -36,9 +38,77 @@ static List<GroupData> convertList(List<GroupRecord> records){
         return new GroupData("" + record.id, record.name, record.header, record.footer);
     }
 
+    private static GroupRecord convert(GroupData data) {
+        var id = data.id();
+        if ("".equals(id)){
+            id = "0";
+        }
+        return new GroupRecord(Integer.parseInt(id),data.name(),data.header(),data.footer());
+    }
+    private static List<ContactData> convertContactList(List<ContactRecord> records) {
+        List<ContactData> result = new ArrayList<>();
+        for(var record : records){
+            result.add(convert(record));
+        }
+        return result;
+    }
+
+    private static ContactData convert(ContactRecord record){
+        return new ContactData().
+                withId(""+record.id)
+                .withMname(record.middlename)
+                .withFname(record.firstname)
+                .withLname(record.lastname)
+                .withNname(record.nickname);
+
+    }
+    private static ContactRecord convert(ContactData data){
+        var id = data.id();
+        if ("".equals(id)){
+            id = "0";
+        }
+        return new ContactRecord(Integer.parseInt(id),data.middlename(),data.firstname(),data.lastname(),data.nickname());
+
+    }
+
+
     public List<GroupData> getGroupList() {
-        return  convertList(sessionFactory.fromSession(session -> {
+        return  convertListC(sessionFactory.fromSession(session -> {
             return session.createQuery("from GroupRecord",GroupRecord.class).list();
         }));
+    }
+
+    public long getGroupCount() {
+        return  sessionFactory.fromSession(session -> { //считаем кол-во групп в результате запроса
+            return session.createQuery("select count(*) from GroupRecord",long.class).getSingleResult();
+        });
+    }
+
+    public void createGroup(GroupData groupData) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin(); //открывает транзакцию в бд при создании группы
+            session.persist(convert(groupData));
+            session.getTransaction().commit(); //коммитим изменения
+        });
+    }
+
+    public void createContact(ContactData contactData) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin(); //открывает транзакцию в бд при создании контакта
+            session.persist(convert(contactData));
+            session.getTransaction().commit(); //коммитим изменения
+        });
+    }
+
+    public List<ContactData> getContactList() {
+        return  convertContactList(sessionFactory.fromSession(session -> {
+            return session.createQuery("from ContactRecord",ContactRecord.class).list();
+        }));
+    }
+
+    public long getContactCount() {
+        return  sessionFactory.fromSession(session -> { //считаем кол-во групп в результате запроса
+            return session.createQuery("select count(*) from ContactRecord",long.class).getSingleResult();
+        });
     }
 }

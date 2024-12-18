@@ -1,5 +1,6 @@
 package Tests;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -10,14 +11,18 @@ import java.util.Random;
 public class ContactModificationTest extends TestBase {
     @Test
     void canModifyContact(){
-        app.contacts().openContactPresent();
-        app.contacts().checkIsContact();
-        var oldContacts = app.contacts().getList();
+//        app.contacts().openContactPresent();
+//        app.contacts().checkIsContact();
+        if (app.hbm().getContactCount() == 0) //если количество контактов = 0, то сначала создаем новый, а потом изменяем его параметры
+        {
+            app.hbm().createContact(new ContactData("", "mname", "lname", "nmane","fname"));
+        }
+        var oldContacts = app.hbm().getContactList();
         var rand = new Random();
         var index = rand.nextInt(oldContacts.size());
         var testData = new ContactData().withFname("modified name");
         app.contacts().modifyContact(oldContacts.get(index), testData);
-        var newContacts = app.contacts().getList();
+        var newContacts = app.hbm().getContactList();
         var expectedList = new ArrayList<>(oldContacts);
         expectedList.set(index, testData.withId(oldContacts.get(index).id()));
         Comparator<ContactData> compareById = (o1, o2) -> {

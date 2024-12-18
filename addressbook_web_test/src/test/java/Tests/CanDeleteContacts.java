@@ -11,15 +11,16 @@ public class CanDeleteContacts extends TestBase {
 
     @Test
     public void canRemoveContact() {
-        app.contacts().openContactPresent();
-        if (app.contacts().getCount() == 0) {
-            app.contacts().createContact(new ContactData("", "lastname1", "firstname1"));//вызов метода создания контакта
+       // app.contacts().openContactPresent();
+        if (app.hbm().getContactCount() == 0) //если количество контактов = 0, то сначала создаем новый, а потом изменяем его параметры
+        {
+            app.hbm().createContact(new ContactData("", "mname", "lname", "nmane","fname"));
         }
-        var oldContacts = app.contacts().getList();
+        var oldContacts = app.hbm().getContactList();
         var rand = new Random();
         var index = rand.nextInt(oldContacts.size());
         app.contacts().removeContact(oldContacts.get(index));
-        var newContacts = app.contacts().getList();
+        var newContacts = app.hbm().getContactList();
         var expectedList = new ArrayList<>(oldContacts);
         expectedList.remove(index);
         Assertions.assertEquals(newContacts, expectedList);

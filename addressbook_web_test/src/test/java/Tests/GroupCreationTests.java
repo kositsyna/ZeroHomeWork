@@ -42,9 +42,9 @@ public class GroupCreationTests extends TestBase {
     @ParameterizedTest
     @MethodSource("singleRandomGroup")  //генератор тестовых данных для групп
     public void CanCreateGroup(GroupData group) {
-        var oldGroups= app.jdbc().getGroupList(); //получаем список групп перед удалением объекта
+        var oldGroups= app.hbm().getGroupList(); //получаем список групп перед удалением объекта
         app.groups().createGroup(group);
-        var newGroups = app.jdbc().getGroupList();
+        var newGroups = app.hbm().getGroupList();
         Comparator<GroupData> compareById = (o1, o2) -> {  //переменная для сортировки списков
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };

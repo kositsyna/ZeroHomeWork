@@ -15,13 +15,12 @@ public class TestBase {
 
     @BeforeEach
     public void setUp() throws IOException {
-        Properties properties = null;
         if (app == null) {
-            properties = new Properties();
+            var properties = new Properties();
             properties.load(new FileReader(System.getProperty("target", "local.properties"))); //читаем конфиги из файла
             app = new ApplicationManager();
+         app.init(System.getProperty("chrome", "firefox"), properties);
         }
-        app.init(System.getProperty("chrome", "firefox"), properties);
     }
 
     public static String randomFile(String dir){

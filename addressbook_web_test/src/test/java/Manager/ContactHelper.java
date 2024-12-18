@@ -67,7 +67,7 @@ public class ContactHelper extends HelperBase {
 
     public void checkIsContact() { // если на странице нет контактов, то создадим
         if (!manager.isElementPresent(By.name("selected[]"))) {
-            createContact(new ContactData("","lastname78", "firstname74"));//вызов метода создания контакта
+            createContact(new ContactData("","middlename7","lastname78", "firstname74","nick77"));//вызов метода создания контакта
         }
     }
     private void selectContact(ContactData contact) {
@@ -80,6 +80,9 @@ public class ContactHelper extends HelperBase {
     private void fillContactForm(ContactData contact) {//метод для изменения данных контакта
         type(By.name("firstname"), contact.firstname());
         type(By.name("lastname"), contact.lastname());
+        type(By.name("middlename"), contact.middlename());
+        type(By.name("nickname"), contact.nickname());
+
     }
 
     private void submitContactModification() {

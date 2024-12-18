@@ -1,6 +1,7 @@
 package Tests;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.CommonFunctions;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,13 +54,20 @@ public class ContactCreationTest extends TestBase {
         return result;
     }
 
-    @ParameterizedTest
-    @MethodSource("contactProvider")//провайдер тестовых данных, который генерирует данные
+    public static List<ContactData> singleRandomContact() {
+        return List.of(new ContactData()
+                .withMname(CommonFunctions.randomString(20))
+                .withFname(CommonFunctions.randomString(10))
+                .withLname(CommonFunctions.randomString(12))
+                .withNname(CommonFunctions.randomString(18)));
+    }
+
+        @ParameterizedTest
+    @MethodSource("singleRandomContact")//провайдер тестовых данных, который генерирует данные
     public void CanCreateMultipleContacts(ContactData contact) {//создаем несколько контактов со случайным наименованием в адресной книге
-        List<ContactData> oldContacts;//класс помощник для получения списка контактов
-        oldContacts = app.contacts().getList();
+        var oldContacts = app.hbm().getContactList();
         app.contacts().createContact(contact);//создание контакта
-        var newContacts = app.contacts().getList();
+        var newContacts = app.hbm().getContactList();
         Comparator<ContactData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));//сравниваем идентификаторы контактов, они не числа, а строки
         };
