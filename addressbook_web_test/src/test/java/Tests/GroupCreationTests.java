@@ -54,7 +54,7 @@ public class GroupCreationTests extends TestBase {
         expectedList.add(group.withId(maxId)); //
         expectedList.sort(compareById);
         Assertions.assertEquals(newGroups,expectedList); //сравнение списков
-        
+
     }
 
     public static List<GroupData> negativeGroupProvider() { //негативные данные
