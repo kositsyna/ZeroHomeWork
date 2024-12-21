@@ -1,6 +1,7 @@
 package Tests;
 
 import Manager.ApplicationManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +23,13 @@ public class TestBase {
          app.init(System.getProperty("chrome", "firefox"), properties);
         }
     }
+
+    @AfterEach
+    void checkDataBaseConsistency(){
+        app.jdbc().checkConsistensy();
+
+    }
+
 
     public static String randomFile(String dir){
         var fileNames = new File(dir).list();

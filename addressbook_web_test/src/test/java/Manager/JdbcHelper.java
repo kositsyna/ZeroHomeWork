@@ -56,4 +56,20 @@ public class JdbcHelper extends HelperBase {
         }
         return contacts;//возвращаем список полученный из БД
     }
+
+    public void checkConsistensy() {
+        try (var conn = DriverManager.getConnection("jdbc:mysql://localhost/addressbook","root","");
+             var statement = conn.createStatement(); //Соединяемся с БД
+             var result = statement.executeQuery("SELECT * FROM address_in_groups ag LEFT JOIN addressbook ab ON ab.id=ag.id WHERE ab.id IS NULL");) //выполняем запрос к таблице
+        {
+            if (result.next()){
+                throw new IllegalStateException("DB is currupted");
+                            }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
