@@ -20,7 +20,7 @@ public class HibernateHelper extends HelperBase {
             sessionFactory =  new Configuration()
                     .addAnnotatedClass(ContactRecord.class)
                     .addAnnotatedClass(GroupRecord.class)
-                    .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
+                    .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook?zeroDateTimeBehavior=convertToNull")
                     .setProperty(AvailableSettings.USER, "root")
                     .setProperty(AvailableSettings.JAKARTA_JDBC_PASSWORD, "")
                     .buildSessionFactory();
@@ -110,5 +110,12 @@ static List<GroupData> convertListC(List<GroupRecord> records){
         return  sessionFactory.fromSession(session -> { //считаем кол-во групп в результате запроса
             return session.createQuery("select count(*) from ContactRecord",long.class).getSingleResult();
         });
+    }
+
+    public List<ContactData> getContactsInGroup(GroupData group) {
+             return (sessionFactory.fromSession(session -> {
+                 return convertContactList(session.get(GroupRecord.class,group.id()).contacts);
+
+        }));
     }
 }

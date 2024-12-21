@@ -6,6 +6,7 @@ import model.ContactData;
 import model.GroupData;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,20 @@ public class ContactHelper extends HelperBase {
         submitContactCreation();//сохранение данных по контакту
         returnToHomePage();//вернуться на станицу с контактами
     }
+
+    public void createContact2(ContactData contact,GroupData group) {//метод для создания контакта
+        openContactPage();//открыть страницу с контактами
+        initContactCreation();//открыть форму с новым контактом
+        fillContactForm(contact);//изменить данные по контакту
+        selectGroup(group);
+        submitContactCreation();//сохранение данных по контакту
+        returnToHomePage();//вернуться на станицу с контактами
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
+    }
+
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {//метод для модификации контакта
         selectContact(contact);//выбрать

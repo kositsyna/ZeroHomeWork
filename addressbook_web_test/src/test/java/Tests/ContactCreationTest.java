@@ -3,7 +3,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import common.CommonFunctions;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -77,6 +79,36 @@ public class ContactCreationTest extends TestBase {
         expectedList.sort(compareById);
         Assertions.assertEquals(newContacts,expectedList);//проверка, которая сравнивает 2 списка ожидаемый и реальный
     }
+
+    @Test
+    void canCreateContact(){
+        var contact = new ContactData()
+                .withFname(CommonFunctions.randomString(10))
+                .withLname(CommonFunctions.randomString(11))
+                .withNname(CommonFunctions.randomString(12))
+                .withMname(CommonFunctions.randomString(13));
+        app.contacts().createContact(contact);
+    }
+    @Test
+
+    void canCreateContactInGroup(){
+        var contact = new ContactData()
+                .withFname(CommonFunctions.randomString(10))
+                .withLname(CommonFunctions.randomString(11))
+                .withNname(CommonFunctions.randomString(12))
+                .withMname(CommonFunctions.randomString(13));
+        if (app.hbm().getGroupCount() == 0) //Если количество групп = 0, то сначала создаем новую
+        {
+            app.hbm().createGroup(new GroupData("", "", "", ""));
+        }
+        var group= app.hbm().getGroupList().get(0);
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        app.contacts().createContact2(contact,group);
+        var newRelated = app.hbm().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size()+1,newRelated.size());
+
+    }
+
 
 //    public static List<ContactData> negativeContactProvider() {//возвращает список объектов ContactData
 //        var result=new ArrayList<ContactData>(List.of(
