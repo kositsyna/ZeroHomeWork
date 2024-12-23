@@ -19,6 +19,7 @@ public class CanDeleteContacts extends TestBase {
         var oldContacts = app.hbm().getContactList();
         var rand = new Random();
         var index = rand.nextInt(oldContacts.size());
+        app.contacts().moveToPage();
         app.contacts().removeContact(oldContacts.get(index));
         var newContacts = app.hbm().getContactList();
         var expectedList = new ArrayList<>(oldContacts);

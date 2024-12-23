@@ -142,4 +142,8 @@ public class ContactHelper extends HelperBase {
         }
         return contacts;
     }
+
+    public void moveToPage() {
+        click(By.linkText("home"));
+    }
 }
