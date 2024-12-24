@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -33,30 +34,25 @@ public class GroupCreationTests extends TestBase {
       result.addAll(value);
         return result;
     }
-    public static Stream<GroupData> singleRandomGroup() { //создание одной группы
+    public static Stream<GroupData> RandomGroups() { //создание одной группы
         Supplier<GroupData> randomGroup = () -> new GroupData()
                 .withName(CommonFunctions.randomString(10))
                 .withHeader(CommonFunctions.randomString(20))
                 .withFooter(CommonFunctions.randomString(30));
-        return Stream.generate(randomGroup).limit(3);
+        return Stream.generate(randomGroup).limit(1);
     }
 
     @ParameterizedTest
-    @MethodSource("singleRandomGroup")  //генератор тестовых данных для групп
+    @MethodSource("RandomGroups")  //генератор тестовых данных для групп
     public void CanCreateGroup(GroupData group) {
         var oldGroups= app.hbm().getGroupList(); //получаем список групп перед удалением объекта
         app.groups().createGroup(group);
         var newGroups = app.hbm().getGroupList();
-        Comparator<GroupData> compareById = (o1, o2) -> {  //переменная для сортировки списков
-            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-        };
-        newGroups.sort(compareById);
-        var expectedList = new ArrayList<>(oldGroups); // загружаем список групп после модификации
-        var maxId = newGroups.get(newGroups.size()-1).id();
-        expectedList.add(group.withId(maxId)); //
-        expectedList.sort(compareById);
-        Assertions.assertEquals(newGroups,expectedList); //сравнение списков
-
+        var extraGroups = newGroups.stream().filter(g -> !oldGroups.contains(g)).toList();
+        var newID=extraGroups.get(0).id();
+        var expectedList = new ArrayList<>(oldGroups);
+        expectedList.add(group.withId(newID));
+        Assertions.assertEquals(Set.copyOf(newGroups), Set.copyOf(expectedList));
     }
 
     public static List<GroupData> negativeGroupProvider() { //негативные данные

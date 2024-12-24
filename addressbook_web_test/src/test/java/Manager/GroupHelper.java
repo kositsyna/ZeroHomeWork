@@ -117,6 +117,6 @@ public class GroupHelper extends HelperBase {
                 })
                 .collect(Collectors.toList());
     }
-    
+
 }
 
