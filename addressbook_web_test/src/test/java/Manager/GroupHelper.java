@@ -95,10 +95,13 @@ public class GroupHelper extends HelperBase {
     }
 
     public void selectAllGroups() {
-        var countCheckBox = manager.driver.findElements(By.name("selected[]"));// Переменная, в которой храним кол-во групп
-        for (var checkbox : countCheckBox){
-            checkbox.click();
-        }
+        // Переменная, в которой храним кол-во групп
+        //        for (var checkbox : countCheckBox){
+//            checkbox.click();
+//        }
+        manager.driver
+                .findElements(By.name("selected[]"))
+                .forEach(checkbox -> checkbox.click());
     }
 
     public List<GroupData> getList() {
