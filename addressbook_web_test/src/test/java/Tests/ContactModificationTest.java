@@ -15,7 +15,7 @@ public class ContactModificationTest extends TestBase {
 //        app.contacts().checkIsContact();
         if (app.hbm().getContactCount() == 0) //если количество контактов = 0, то сначала создаем новый, а потом изменяем его параметры
         {
-            app.hbm().createContact(new ContactData("", "ejmdnsv", "skmajnss", "plssjnshs", "yrds", "", "gdsf", "", "", "+7854121541", "", ""));
+            app.hbm().createContact(new ContactData("", "ejmdnsv", "skmajnss", "plssjnshs", "yrds", "fgfgf@ghg.ty","","", "gdsf", "", "", "+7854121541", "", ""));
         }
         var oldContacts = app.hbm().getContactList();
         var rand = new Random();

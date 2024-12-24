@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +54,7 @@ static List<GroupData> convertListC(List<GroupRecord> records){
                 .withAddress(record.address)
                 .WithEmail(record.email)
                 .withFname(record.firstname)
-                .WithFoto(record.photo)
+                .WithPhoto(record.photo)
                 .WithHome(record.home)
                 .WithMobile(record.mobile)
                 .WithWork(record.work)

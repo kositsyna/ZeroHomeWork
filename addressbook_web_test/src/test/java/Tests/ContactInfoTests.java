@@ -35,6 +35,11 @@ public class ContactInfoTests extends TestBase {
         var contacts = app.hbm().getContactList();
         var contact = contacts.get(0);
         var email = app.contacts().getemail(contact);
+        var expected = Stream.of(contact.email(),contact.email2(),contact.email3()) //Склеиваем строчки, пустые пропускаеи
+                .filter(s->s !=null && !"".equals(s))
+                .collect(Collectors.joining("\n"));
+        Assertions.assertEquals(expected,email);
+
 
 
     }

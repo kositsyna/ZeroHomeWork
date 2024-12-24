@@ -82,7 +82,7 @@ public class ContactHelper extends HelperBase {
 
     public void checkIsContact() { // если на странице нет контактов, то создадим
         if (!manager.isElementPresent(By.name("selected[]"))) {
-            createContact(new ContactData("", "mn", "ln", "nn", "addr", "ema@fff.si", "fn", "", "", "+441121211", "", "")); //вызов метода создания контакта
+            createContact(new ContactData("", "mn", "ln", "nn", "addr", "ema@fff.si","","", "fn", "", "", "+441121211", "", "")); //вызов метода создания контакта
         }
     }
     private void selectContact(ContactData contact) {
