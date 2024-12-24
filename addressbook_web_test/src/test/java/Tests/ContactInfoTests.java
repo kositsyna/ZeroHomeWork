@@ -20,5 +20,24 @@ public class ContactInfoTests extends TestBase {
     Assertions.assertEquals(expected,phones);
 }
 
+@Test
+    void testAddress(){
+    var contacts = app.hbm().getContactList();
+    var contact = contacts.get(0);
+    var address = app.contacts().getaddress(contact);
+    var expected = contact.address();
+    Assertions.assertEquals(expected,address);
+
+}
+
+    @Test
+    void testEmail(){
+        var contacts = app.hbm().getContactList();
+        var contact = contacts.get(0);
+        var email = app.contacts().getemail(contact);
+
+
+    }
+
 }
 

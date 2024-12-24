@@ -151,4 +151,14 @@ public class ContactHelper extends HelperBase {
         return manager.driver.findElement(By.xpath(
                 String.format("//input[@id='%s']/../../td[6]",contact.id()))).getText();
     }
+
+    public String getaddress(ContactData contact) {
+        return manager.driver.findElement(By.xpath( //возвращаем текст
+                String.format("//input[@id='%s']/../../td[4]",contact.id()))).getText();
+    }
+
+    public String getemail(ContactData contact) {
+        return manager.driver.findElement(By.xpath( //возвращаем текст
+                String.format("//input[@id='%s']/../../td[5]",contact.id()))).getText();
+    }
 }
