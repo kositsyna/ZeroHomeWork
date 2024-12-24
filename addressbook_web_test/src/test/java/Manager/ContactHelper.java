@@ -82,7 +82,7 @@ public class ContactHelper extends HelperBase {
 
     public void checkIsContact() { // если на странице нет контактов, то создадим
         if (!manager.isElementPresent(By.name("selected[]"))) {
-            createContact(new ContactData("","middlename7","lastname78", "firstname74","nick77"));//вызов метода создания контакта
+            createContact(new ContactData("", "mn", "ln", "nn", "addr", "ema@fff.si", "fn", "", "", "+441121211", "", "")); //вызов метода создания контакта
         }
     }
     private void selectContact(ContactData contact) {
@@ -145,5 +145,10 @@ public class ContactHelper extends HelperBase {
 
     public void moveToPage() {
         click(By.linkText("home"));
+    }
+
+    public String getPhones(ContactData contact) {
+        return manager.driver.findElement(By.xpath(
+                String.format("//input[@id='%s']/../../td[6]",contact.id()))).getText();
     }
 }

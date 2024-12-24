@@ -46,14 +46,20 @@ static List<GroupData> convertListC(List<GroupRecord> records){
         return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
     }
 
-    private static ContactData convert(ContactRecord record){
-        return new ContactData().
-                withId(""+record.id)
+    private static ContactData convert(ContactRecord record) {
+        return new ContactData()
+                .withId("" + record.id)
                 .withMname(record.middlename)
-                .withFname(record.firstname)
                 .withLname(record.lastname)
-                .withNname(record.nickname);
-
+                .withNname(record.nickname)
+                .withAddress(record.address)
+                .WithEmail(record.email)
+                .withFname(record.firstname)
+                .WithFoto(record.photo)
+                .WithHome(record.home)
+                .WithMobile(record.mobile)
+                .WithWork(record.work)
+                .WithSecondary(record.phone2);
     }
     private static ContactRecord convert(ContactData data){
         var id = data.id();

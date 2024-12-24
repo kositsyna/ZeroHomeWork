@@ -14,7 +14,7 @@ public class CanDeleteContacts extends TestBase {
        // app.contacts().openContactPresent();
         if (app.hbm().getContactCount() == 0) //если количество контактов = 0, то сначала создаем новый, а потом изменяем его параметры
         {
-            app.hbm().createContact(new ContactData("", "mname", "lname", "nmane","fname"));
+            app.hbm().createContact(new ContactData("", "mimim", "lalal", "ninin", "adadad", "erer@sdd.ry", "fjsknf", "", "", "+788598745125", "", ""));
         }
         var oldContacts = app.hbm().getContactList();
         var rand = new Random();
