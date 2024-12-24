@@ -11,6 +11,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static common.CommonFunctions.randomString;
 
@@ -55,25 +58,21 @@ public class Generator {
             throw new IllegalArgumentException("Неизвестный тип данных" + type);
         }
     }
+    private Object generateData(Supplier<Object> dataSupplier) {
+        return Stream.generate(dataSupplier).limit(count).collect(Collectors.toList()); //коллектор формирует список
+    }
 
     private Object generateGroups() {
-        var result = new ArrayList<GroupData>();
-        for (int i = 0 ; i < count; i++){
-            result.add(new GroupData()
-                    .withName(randomString(i*2))
-                    .withFooter(randomString(i*2))
-                    .withHeader(randomString(i*2)));
-        }
-        return result;
-    }
+        return generateData(()-> new GroupData()
+                    .withName(randomString(2))
+                    .withFooter(randomString(2))
+                    .withHeader(randomString(2)));
+            }
+
     private Object generateContacts() {
-        var result = new ArrayList<ContactData>();
-        for (int i = 0; i<count; i++) {
-            result.add(new ContactData()
-                    .withFname(randomString(i*2))
-                    .withLname(randomString(i*2)));}
-        //.withPhoto(randomFile("src/test/resources/images")));
-        return result;
+        return generateData(() -> new ContactData()
+                        .withFname(randomString(2))
+                        .withLname(randomString(2)));
     }
 
     private void save(Object data) throws IOException {
