@@ -13,6 +13,8 @@ public class ApplicationManager {
     private String string;
     private Properties properties;
     private SessionHelper sessionHelper;
+    private HttpSessionHelper httpSessionHelper;
+
 
     public void init(String browser, Properties properties) {
         this.string = browser;
@@ -42,4 +44,15 @@ public class ApplicationManager {
         return sessionHelper;//возвращаем либо созданный объект, либо тот, который был создан ранее
     }
 
+    public HttpSessionHelper htpp() {
+        if (httpSessionHelper==null){//ленивая инициализация
+            httpSessionHelper = new HttpSessionHelper(this);//менеджер передает ссылку на себя
+        }
+        return httpSessionHelper;//возвращаем либо созданный объект либо тот, который был создан ранее
+    }
+
+    public String property(String name){//вспомогательный метод для обращения к файлу с настройками
+        return properties.getProperty(name);
+    }
 }
+
