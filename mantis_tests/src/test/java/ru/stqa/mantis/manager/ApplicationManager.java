@@ -14,6 +14,8 @@ public class ApplicationManager {
     private Properties properties;
     private SessionHelper sessionHelper;
     private HttpSessionHelper httpSessionHelper;
+    private JamesCLIHelper jamesCLIHelper;
+
 
 
     public void init(String browser, Properties properties) {
@@ -50,9 +52,16 @@ public class ApplicationManager {
         }
         return httpSessionHelper;//возвращаем либо созданный объект либо тот, который был создан ранее
     }
+    public JamesCLIHelper jamesCli() {
+        if (jamesCLIHelper==null){//ленивая инициализация
+            jamesCLIHelper = new JamesCLIHelper(this);//менеджер передает ссылку на себя
+        }
+        return jamesCLIHelper;//возвращаем либо созданный объект либо тот, который был создан ранее
+    }
 
     public String property(String name){//вспомогательный метод для обращения к файлу с настройками
         return properties.getProperty(name);
     }
+
 }
 
