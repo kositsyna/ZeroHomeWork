@@ -1,9 +1,6 @@
 package ru.stqa.mantis.manager;
 
-import jakarta.mail.Folder;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Session;
-import jakarta.mail.Store;
+import jakarta.mail.*;
 import ru.stqa.mantis.model.MailMessage;
 
 import java.io.IOException;
@@ -22,10 +19,7 @@ public class MailHelper extends HelperBase{
         var start = System.currentTimeMillis();//запоминаем время выполнения начала метода
         while (System.currentTimeMillis()<start+duration.toMillis()){
             try {
-                var session = Session.getInstance(new Properties());
-                Store store = session.getStore("pop3");;//получаем доступ к хранилищу почты
-                store.connect("localhost",username,password);//устанавливаем соединение
-                var inbox = store.getFolder("INBOX");//обращаемся к почтовому ящику
+                var inbox = getInbox(username, password);
                 inbox.open(Folder.READ_ONLY);//открываем ящик только на чтение
                 var messages = inbox.getMessages();//Вычитываем почту.
                 var result = Arrays.stream(messages)
@@ -42,7 +36,7 @@ public class MailHelper extends HelperBase{
                         })
                         .toList();//превращаем массив в поток
                 inbox.close();//закрываем почту
-                store.close();//закрываем хранилище
+                inbox.getStore().close();//закрываем хранилище
                 if (result.size()>0){//если список не пуст
                     return result;//возвращаем результат
                 }
@@ -57,4 +51,36 @@ public class MailHelper extends HelperBase{
         }
         throw new RuntimeException("No mail"); //если не получили почту,то выбрасываем исключение
     }
+
+    private static Folder getInbox(String username, String password) {
+        try {
+            var session = Session.getInstance(new Properties());
+            Store store = null;
+            store = session.getStore("pop3");
+            store.connect("localhost", username, password);//устанавливаем соединение
+            var inbox = store.getFolder("INBOX");
+            return inbox;
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void drain(String username, String password){
+        var inbox = getInbox(username, password);
+        try {
+            inbox.open(Folder.READ_WRITE);//открываем ящик на чтение и запись
+            Arrays.stream(inbox.getMessages()).forEach(m -> {
+                try {
+                    m.setFlag(Flags.Flag.DELETED,true);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            inbox.close();
+            inbox.getStore().close();
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+   }
 }
