@@ -91,6 +91,12 @@ public class ContactHelper extends HelperBase {
     private void initContactModification(ContactData contact) {
         click(By.cssSelector(String.format("[href='edit.php?id=%s']",contact.id())));
     }
+    private void selectGroupRoof(GroupData group) {
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
+    }
+    private void removeContactFromGroupMeth() { //удаление контакта из группы
+        click(By.xpath("//input[@name=\'remove\']"));
+    }
 
     private void fillContactForm(ContactData contact) {//метод для изменения данных контакта
         type(By.name("firstname"), contact.firstname());
@@ -103,7 +109,7 @@ public class ContactHelper extends HelperBase {
     private void submitContactModification() {
         click(By.name("update"));
     }
-    private void returnToHomePage() {
+    public void returnToHomePage() {
         click(By.linkText("home"));
     }
 
@@ -160,5 +166,33 @@ public class ContactHelper extends HelperBase {
     public String getemail(ContactData contact) {
         return manager.driver.findElement(By.xpath( //возвращаем текст
                 String.format("//input[@id='%s']/../../td[5]",contact.id()))).getText();
+    }
+
+    public boolean isContactInGroup(List<ContactData> contacts, ContactData contact) { // проверить, есть ли в списке нужный контакт
+        for(ContactData cd : contacts)
+            if (cd.id().equals(contact.id())) return true;
+        return false;
+    }
+
+    public void removeContactFromGroup(ContactData contact, GroupData group) {
+        openContactPresent();
+        selectGroupRoof(group);
+        selectContact(contact);
+        removeContactFromGroupMeth();
+    }
+
+    public void addContactInGroup(ContactData contact, GroupData group) {
+        openContactPresent();
+        selectContact(contact);
+        selectGroupHome(group);
+        addSelectedContact();
+    }
+
+    private void addSelectedContact() {
+        click(By.xpath("//input[@name=\'add\']"));
+    }
+
+    private void selectGroupHome(GroupData group) {
+        new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(group.id());
     }
 }

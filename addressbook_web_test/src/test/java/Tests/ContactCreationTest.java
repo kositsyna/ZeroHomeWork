@@ -109,20 +109,45 @@ public class ContactCreationTest extends TestBase {
 
     }
 
+    @Test
+    public void canAddContactInGroup() {
+        if (app.hbm().getContactCount()==0) {
+            var contact = new ContactData()//создаем новый контакт
+                    .withLname(CommonFunctions.randomString(10))
+                    .withFname(CommonFunctions.randomString(10))
+                    .withMname(CommonFunctions.randomString(10));
+            app.contacts().createContact(contact);
+        }
+        if (app.hbm().getGroupCount()==0) {
+            var group = new GroupData()
+                    .withName(CommonFunctions.randomString(10))
+                    .withHeader(CommonFunctions.randomString(20))
+                    .withFooter(CommonFunctions.randomString(30));
+            app.groups().createGroup(group);//создаём новую группу
+        }
+        app.contacts().returnToHomePage();
+        var contact = app.contacts().getList().get(0);  //выбираем контакт
+        var group = app.groups().getList().get(0);      // выбираем группу
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        if (app.contacts().isContactInGroup(oldRelated, contact)) {
+            app.contacts().returnToHomePage();
+            app.contacts().removeContactFromGroup(contact, group);
+            app.groups().openGroupsPage();
+            app.contacts().returnToHomePage();
+            oldRelated = app.hbm().getContactsInGroup(group);
+        }
+        app.contacts().returnToHomePage();
+        app.contacts().addContactInGroup(contact, group); // добавление контакта в группу
+        var newRelated = app.hbm().getContactsInGroup(group);
+        Comparator<ContactData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newRelated.sort(compareById);
+        oldRelated.add(contact);
+        oldRelated.sort(compareById);
+        Assertions.assertEquals(oldRelated, newRelated);
+    }
 
-//    public static List<ContactData> negativeContactProvider() {//возвращает список объектов ContactData
-//        var result=new ArrayList<ContactData>(List.of(
-//                new ContactData ("", "","FName")));//инициализируем создаваемый список соответствующими значениями
-//        return result;
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource ("negativeContactProvider")
-//    public void CanNotContact(ContactData contact) {
-//        var oldContacts = app.contacts().getList();
-//        app.contacts().createContact(contact);
-//        var newContacts = app.contacts().getList();
-//        Assertions.assertEquals(newContacts, oldContacts);
-//    }
+
 
 }
