@@ -15,6 +15,8 @@ public class ApplicationManager {
     private SessionHelper sessionHelper;
     private HttpSessionHelper httpSessionHelper;
     private JamesCLIHelper jamesCLIHelper;
+    private MailHelper mailHelper;
+
 
 
 
@@ -57,6 +59,13 @@ public class ApplicationManager {
             jamesCLIHelper = new JamesCLIHelper(this);//менеджер передает ссылку на себя
         }
         return jamesCLIHelper;//возвращаем либо созданный объект либо тот, который был создан ранее
+    }
+
+    public MailHelper mail() {//ленивая инициализация
+        if (mailHelper == null) {
+            mailHelper = new MailHelper(this);
+        }
+        return mailHelper;
     }
 
     public String property(String name){//вспомогательный метод для обращения к файлу с настройками
