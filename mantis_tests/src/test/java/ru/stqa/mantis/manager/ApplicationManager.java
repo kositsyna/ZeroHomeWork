@@ -18,9 +18,8 @@ public class ApplicationManager {
     private JamesCLIHelper jamesCLIHelper;
     private MailHelper mailHelper;
     public RegistrHelper registrHelper;
-
-
-
+    public JamesAPIHelper jamesApi;
+    private DeveloperMailHelper developerMailHelper;
 
 
     public void init(String browser, Properties properties) {
@@ -63,12 +62,24 @@ public class ApplicationManager {
         }
         return jamesCLIHelper;//возвращаем либо созданный объект либо тот, который был создан ранее
     }
+    public JamesAPIHelper jamesApi() {
+        if (jamesApi==null){//ленивая инициализация
+            jamesApi = new JamesAPIHelper(this);//менеджер передает ссылку на себя
+        }
+        return jamesApi;//возвращаем либо созданный объект либо тот, который был создан ранее
+    }
 
     public MailHelper mail() {//ленивая инициализация
         if (mailHelper == null) {
             mailHelper = new MailHelper(this);
         }
         return mailHelper;
+    }
+    public DeveloperMailHelper developerMail() {//ленивая инициализация
+        if (developerMailHelper == null) {
+            developerMailHelper = new DeveloperMailHelper(this);
+        }
+        return developerMailHelper;
     }
 
     public RegistrHelper registrHelper() {//ленивая инициализация
