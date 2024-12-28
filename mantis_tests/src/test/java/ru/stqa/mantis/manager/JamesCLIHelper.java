@@ -1,5 +1,6 @@
 package ru.stqa.mantis.manager;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.io.CircularOutputStream;
 import org.openqa.selenium.os.CommandLine;
 
@@ -21,5 +22,4 @@ public class JamesCLIHelper extends HelperBase{
         cmd.waitFor();//подождать пока она доработает до конца
         System.out.println(out);//печатаем на консоль то, что перехватили
     }
-
-    }
+}

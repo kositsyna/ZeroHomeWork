@@ -1,5 +1,6 @@
 package ru.stqa.mantis.manager;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,13 +10,15 @@ import java.util.Properties;
 
 public class ApplicationManager {
 
-    private WebDriver driver;
+    WebDriver driver;
     private String string;
     private Properties properties;
     private SessionHelper sessionHelper;
     private HttpSessionHelper httpSessionHelper;
     private JamesCLIHelper jamesCLIHelper;
     private MailHelper mailHelper;
+    public RegistrHelper registrHelper;
+
 
 
 
@@ -35,7 +38,7 @@ public class ApplicationManager {
                 throw new IllegalArgumentException(String.format("Unknown browser", string));
             }
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
-            driver.get(properties.getProperty("web.baseUrl"));
+            driver.get(properties.getProperty("web.baseURL"));
             driver.manage().window().setSize(new Dimension(1386, 742));
         }
         return driver;
@@ -68,8 +71,25 @@ public class ApplicationManager {
         return mailHelper;
     }
 
+    public RegistrHelper registrHelper() {//ленивая инициализация
+        if (registrHelper == null) {
+            registrHelper = new RegistrHelper(this);
+        }
+        return registrHelper;
+    }
+
     public String property(String name){//вспомогательный метод для обращения к файлу с настройками
         return properties.getProperty(name);
+    }
+
+    public void doneRegistr (String url, String username) {
+        WebDriver driver = new FirefoxDriver();
+        driver.get(url);
+        driver.manage().window().setSize(new Dimension(1920, 1040));
+        driver.findElement(By.id("realname")).sendKeys(username);
+        driver.findElement(By.id("password")).sendKeys("password");
+        driver.findElement(By.id("password-confirm")).sendKeys("password");
+        driver.findElement((By.cssSelector("span.bigger-110"))).click();
     }
 
 }

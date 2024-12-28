@@ -15,18 +15,15 @@ public class MailHelper extends HelperBase{
     }
 
     public List<MailMessage> receive(String username, String password, Duration duration) {
-        //Цикл для проверки почты. Завершаем его по истечении времени. Возвращает либо почту, либо исключение
-        var start = System.currentTimeMillis();//запоминаем время выполнения начала метода
-        while (System.currentTimeMillis()<start+duration.toMillis()){
+        var start = System.currentTimeMillis();
+        while (System.currentTimeMillis() < start + duration.toMillis()) {
             try {
                 var inbox = getInbox(username, password);
-                inbox.open(Folder.READ_ONLY);//открываем ящик только на чтение
-                var messages = inbox.getMessages();//Вычитываем почту.
+                inbox.open(Folder.READ_ONLY);
+                var messages = inbox.getMessages();
                 var result = Arrays.stream(messages)
                         .map(m -> {
                             try {
-                                // Применяем map и передаем в качестве параметра трансформатор, который будет преобразовывать объекты одного тиа в другой.
-                                // Обратный адрес m.getFrom(). Берем первого отправителя, тк их мб много. Преобразуем это в список
                                 return new MailMessage()
                                         .withFrom(m.getFrom()[0].toString())
                                         .withContent((String) m.getContent());
@@ -34,11 +31,11 @@ public class MailHelper extends HelperBase{
                                 throw new RuntimeException(e);
                             }
                         })
-                        .toList();//превращаем массив в поток
-                inbox.close();//закрываем почту
-                inbox.getStore().close();//закрываем хранилище
-                if (result.size()>0){//если список не пуст
-                    return result;//возвращаем результат
+                        .toList();
+                inbox.close();
+                inbox.getStore().close();
+                if(result.size() > 0) {
+                    return result;
                 }
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
@@ -49,20 +46,20 @@ public class MailHelper extends HelperBase{
                 throw new RuntimeException(e);
             }
         }
-        throw new RuntimeException("No mail"); //если не получили почту,то выбрасываем исключение
+        throw new RuntimeException("No mail");
     }
 
     private static Folder getInbox(String username, String password) {
         try {
             var session = Session.getInstance(new Properties());
-            Store store = null;
-            store = session.getStore("pop3");
-            store.connect("localhost", username, password);//устанавливаем соединение
+            Store store = session.getStore("pop3");
+            store.connect("localhost", username, password);
             var inbox = store.getFolder("INBOX");
             return inbox;
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public void drain(String username, String password){

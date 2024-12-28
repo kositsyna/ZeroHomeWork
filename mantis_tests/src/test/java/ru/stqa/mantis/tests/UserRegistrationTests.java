@@ -1,19 +1,41 @@
 package ru.stqa.mantis.tests;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import ru.stqa.mantis.common.CommonFunctions;
 
-public class UserRegistrationTests extends TestBase{
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
-    @Test
-    void canRegisterUser(String username){
-        var email = String.format("%@localhost",username);
-        //создать пользователя (адрес) на почтовом сервере JamesCliHelper
-        //открываем браузер и заполняем форму создания и отправляем (в браузере, создать класс помощник) Письмо уходит
-        //получаем (ждём) почту (MailHelper)
-        //извлекаем ссылку из письма
-        //проходим по ссылке и завершаем регистрацию пользователя (в браузере, создать класс помощник)
-        //проверяем, что пользователь может залогиниться (HttpSessionHelper)
+public class UserRegistrationTests extends TestBase {
 
 
+
+   @Test
+    void canRegisterUser() {
+
+       var username = CommonFunctions.randomString(6);
+       var email1 = String.format("%s@localhost", username);
+       app.jamesCli().addUser(email1,"password");
+       app.registrHelper().signupNewAccount(username, email1);
+       var messages=app.mail().receive(email1,"password", Duration.ofSeconds(50));
+       app.mail().drain(email1,"password");
+       var text = messages.get(0).content();
+       var pattern = Pattern.compile("http://\\S*");
+       var matcher = pattern.matcher(text);
+       if (matcher.find()){
+           var url= text.substring(matcher.start(),matcher.end());
+           System.out.println(url);
+           app.registrHelper.confirmReg(url,username);
+       }else {
+           throw  new RuntimeException("No mail");
+       }
+       app.htpp().login(username,"password");
+       Assertions.assertTrue(app.htpp().isLoggedIn());
+        }
     }
-}
+
