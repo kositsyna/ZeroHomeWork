@@ -20,6 +20,8 @@ public class ApplicationManager {
     public RegistrHelper registrHelper;
     public JamesAPIHelper jamesApi;
     private DeveloperMailHelper developerMailHelper;
+    private UserHelper userHelper;
+
 
 
     public void init(String browser, Properties properties) {
@@ -80,6 +82,12 @@ public class ApplicationManager {
             developerMailHelper = new DeveloperMailHelper(this);
         }
         return developerMailHelper;
+    }
+    public UserHelper user() {//ленивая инициализация
+        if (userHelper == null) {//ленивая инициализация
+            userHelper = new UserHelper(this);//менеджер передает ссылку на себя
+        }
+        return userHelper;//возвращаем либо созданный объект либо тот, который был создан ранее
     }
 
     public RegistrHelper registrHelper() {//ленивая инициализация
