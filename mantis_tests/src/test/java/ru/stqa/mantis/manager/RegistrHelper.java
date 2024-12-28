@@ -2,6 +2,10 @@ package ru.stqa.mantis.manager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
+import ru.stqa.mantis.model.MailMessage;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class RegistrHelper extends HelperBase {
@@ -22,17 +26,24 @@ public class RegistrHelper extends HelperBase {
 
     }
 
-        public void confirmReg(String link,String user) {
+        public void confirmReg(String link,String user,String password) {
 
-           // manager.driver = new ChromeDriver();
             manager.driver.get(link);
-            click(By.name("realname"));
-            type(By.name("realname"),user);
-            click(By.name("password"));
-            type(By.name("password"),"password");
-            click(By.name("password_confirm"));
-            type(By.name("password_confirm"),"password");
-            click(By.cssSelector("button[type='submit']"));
-            manager.driver().close();
+           // click(By.name("realname"));
+            type(By.name("realname"), user);
+            type(By.name("password"), password);
+            type(By.name("password_confirm"), password);
+            click(By.cssSelector("button[type = 'submit']"));
+    }
+
+    public String takeUrl(List<MailMessage> messages) {
+        var text = messages.get(0).content();
+        var pattern = Pattern.compile("http://\\S*");
+        var matcher = pattern.matcher(text);
+        String url = "";
+        if (matcher.find()) {
+            url = text.substring(matcher.start(), matcher.end());
+        }
+        return url;
     }
 }
