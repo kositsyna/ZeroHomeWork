@@ -21,6 +21,8 @@ public class ApplicationManager {
     public JamesAPIHelper jamesApi;
     private DeveloperMailHelper developerMailHelper;
     private UserHelper userHelper;
+    private RestApiHelper restApiHelper;
+
 
 
 
@@ -95,6 +97,12 @@ public class ApplicationManager {
             registrHelper = new RegistrHelper(this);
         }
         return registrHelper;
+    }
+    public RestApiHelper rest() {
+        if(restApiHelper == null) {
+            restApiHelper = new RestApiHelper(this);
+        }
+        return restApiHelper;
     }
 
     public String property(String name){//вспомогательный метод для обращения к файлу с настройками
