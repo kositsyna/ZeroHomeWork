@@ -2,6 +2,7 @@ package Manager;
 
 import Manager.hbm.ContactRecord;
 import Manager.hbm.GroupRecord;
+import io.qameta.allure.Step;
 import model.ContactData;
 import model.GroupData;
 import org.hibernate.SessionFactory;
@@ -69,7 +70,7 @@ static List<GroupData> convertListC(List<GroupRecord> records){
 
     }
 
-
+@Step
     public List<GroupData> getGroupList() {
         return  convertListC(sessionFactory.fromSession(session -> {
             return session.createQuery("from GroupRecord",GroupRecord.class).list();

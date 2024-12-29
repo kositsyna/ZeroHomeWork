@@ -8,6 +8,15 @@ version = '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+def allureVersion = '2.29.0'
+def aspectJVersion = '1.9.22'
+
+configurations {
+    agent {
+        canBeResolved = true
+        canBeConsumed = true
+    }
+}
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
@@ -17,16 +26,21 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
     implementation 'com.mysql:mysql-connector-j:9.1.0'
     implementation 'org.hibernate.orm:hibernate-core:6.3.0.CR1'
+   agent "org.aspectj:aspectjweaver:$aspectJVersion"
+
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    testImplementation "io.qameta.allure:allure-junit5"
 
 
 }
 
 test {
     useJUnitPlatform()
-    if (project.hasProperty("browser")){
-        systemProperty("browser",project.property("browser"));
+    if(project.hasProperty("browser")) {
+        systemProperty("browser", project.property("browser"))
     }
-    if (project.hasProperty("target")){
-        systemProperty("target",project.property("target"));
+    if(project.hasProperty("target")) {
+        systemProperty("target", project.property("target"))
     }
+   jvmArgs = [ "-javaagent:${configurations.agent.singleFile}" ]
 }
