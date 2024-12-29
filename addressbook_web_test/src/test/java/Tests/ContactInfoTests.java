@@ -45,20 +45,34 @@ public class ContactInfoTests extends TestBase {
         var phones = app.contacts().getPhones(contact);
         var address = app.contacts().getaddress(contact);
         var email = app.contacts().getemail(contact);
-        var expected = Stream.of(contact.home(),
-                        contact.mobile(),
-                        contact.work(),
-                        contact.phone2(),
-                        contact.email(),
-                        contact.email2(),
-                        contact.email3(),
-                        contact.address().replace("\r", "")) //делаем поток. ОЖИДАЕМОЕ значение
-                .filter(s->s !=null && !"".equals(s))
-                .collect(Collectors.joining("\n"));//склеиваем вместе, в качестве разделителя переход строки \n
-        var actual = Stream.of(phones, email, address)
-                .filter(s->s !=null && !"".equals(s))
+
+        var expectedPh = Stream.of(contact.home(),contact.mobile(),contact.work(),contact.phone2())
+                .filter(s -> s != null && ! "".equals(s))
                 .collect(Collectors.joining("\n"));
-        Assertions.assertEquals(expected,actual);
+
+        var  expectedAdr = Stream.of(contact.address())
+                .collect(Collectors.joining("\n"));
+
+        var  expectedEm = Stream.of(contact.email(),contact.email2(),contact.email3())
+                .filter(s -> s != null && ! "".equals(s))
+                .collect(Collectors.joining("\n"));
+
+//        var expected = Stream.of(contact.home(),
+//                        contact.mobile(),
+//                        contact.work(),
+//                        contact.phone2(),
+//                        contact.email(),
+//                        contact.email2(),
+//                        contact.email3(),
+//                        contact.address().replace("\r", ""))
+//                .filter(s->s !=null && !"".equals(s))
+//                .collect(Collectors.joining("\n"));
+//        var actual = Stream.of(phones, email, address)
+//                .filter(s->s !=null && !"".equals(s))
+//                .collect(Collectors.joining("\n"));
+        Assertions.assertEquals(expectedPh,phones);
+        Assertions.assertEquals(expectedAdr,address);
+        Assertions.assertEquals(expectedEm,email);
     }
 
 }
