@@ -182,10 +182,12 @@ public class ContactHelper extends HelperBase {
     }
 
     public void addContactInGroup(ContactData contact, GroupData group) {
-        openContactPresent();
+        //openContactPresent();
+        returnToHomePage();
         selectContact(contact);
         selectGroupHome(group);
         addSelectedContact();
+        returnToHomePage();
     }
 
     private void addSelectedContact() {
