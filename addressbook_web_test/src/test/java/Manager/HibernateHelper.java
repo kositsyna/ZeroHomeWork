@@ -54,11 +54,11 @@ static List<GroupData> convertListC(List<GroupRecord> records){
                 .withNname(record.nickname)
                 .withAddress(record.address)
                 .WithEmail(record.email)
-                .withFname(record.firstname)
+               .withFname(record.firstname)
                 .WithPhoto(record.photo)
                 .WithHome(record.home)
-                .WithMobile(record.mobile)
-                .WithWork(record.work)
+               .WithMobile(record.mobile)
+               .WithWork(record.work)
                 .WithSecondary(record.phone2);
     }
     private static ContactRecord convert(ContactData data){
@@ -66,8 +66,17 @@ static List<GroupData> convertListC(List<GroupRecord> records){
         if ("".equals(id)){
             id = "0";
         }
-        return new ContactRecord(Integer.parseInt(id),data.middlename(),data.firstname(),data.lastname(),data.nickname());
-
+        return new ContactRecord(Integer.parseInt(id),
+                data.firstname(),
+                data.lastname(),
+                data.address(),
+                data.email(),
+                data.email2(),
+                data.email3(),
+                data.home(),
+                data.mobile(),
+                data.work(),
+                data.phone2());
     }
 
 @Step

@@ -13,16 +13,11 @@ public class ContactRecord {
     public int id;
     public String nickname;
     public String firstname;
-
     public String middlename;
-
     public String lastname;
-
     public String mobile;
-
     public String email;
     public String phone2;
-
     public String address = new String ();
     public String company = new String ();
     public String title = new String ();
@@ -41,13 +36,29 @@ public class ContactRecord {
     public ContactRecord(){
 
     }
-    public ContactRecord(int id,String middlename, String firstname, String lastname, String nickname){
+    public ContactRecord(int id,
+                         String firstname,
+                         String lastname,
+                         String address,
+                         String email,
+                         String email2,
+                         String email3,
+                         String home,
+                         String mobile,
+                         String work,
+                         String phone2){
 
         this.id = id;
-        this.middlename = middlename;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.lastname = nickname;
+        this.address = address;
+        this.email = email;
+        this.email2 = email2;
+        this.email3 = email3;
+        this.home = home;
+        this.mobile = mobile;
+        this.work = work;
+        this.phone2 = phone2;
     }
 
 

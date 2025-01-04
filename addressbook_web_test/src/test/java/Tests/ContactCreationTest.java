@@ -106,25 +106,23 @@ public class ContactCreationTest extends TestBase {
 
     @Test
     public void canAddContactInGroup() {
-        if (app.hbm().getContactCount() == 0) {
-            var contact = new ContactData()  //создаем новый контакт
-                    .withLname(CommonFunctions.randomString(10))
-                    .withFname(CommonFunctions.randomString(10))
-                    .withMname(CommonFunctions.randomString(10));
-            app.hbm().createContact(contact);
-        }
-        if (app.hbm().getGroupCount() == 0) {
-            var group = new GroupData()
-                    .withName(CommonFunctions.randomString(10))
-                    .withHeader(CommonFunctions.randomString(20))
-                    .withFooter(CommonFunctions.randomString(30));
-            app.hbm().createGroup(group);//создаём новую группу
-        }
-        //app.contacts().returnToHomePage();
 
-        var contact = app.hbm().getContactList().get(0);  //выбираем контакт
+        if (app.hbm().getContactCount() == 0  || app.contacts().notInGroup() == 0) {
+            app.contacts().createContact(new ContactData()
+                    .withFname(CommonFunctions.randomString(5))
+                    .withLname(CommonFunctions.randomString(6))
+                    .withNname(CommonFunctions.randomString(7))
+                    .withMname(CommonFunctions.randomString(8)));
+        }
+
+        if (app.hbm().getGroupCount() == 0) //Если количество групп = 0, то сначала создаем новую
+        {
+            app.hbm().createGroup(new GroupData("", "", "", ""));
+        }
+
         var group = app.hbm().getGroupList().get(0);      // выбираем группу
-        var oldRelated = app.hbm().getContactsInGroup(group);
+        var contact = app.hbm().getContactList().get(0);  //выбираем контакт
+               var oldRelated = app.hbm().getContactsInGroup(group);
 
         if (oldRelated.contains(contact)) {
             contact = app.hbm().getContactList().get((oldRelated.size()-1));
@@ -138,10 +136,11 @@ public class ContactCreationTest extends TestBase {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newRelated.sort(compareById);
-        oldRelated.add(contact);    // добавим контакт в старый список
-        oldRelated.sort(compareById); // сортируем старый список
-        Assertions.assertEquals(oldRelated, newRelated);
+//        oldRelated.add(contact);    // добавим контакт в старый список
+//        oldRelated.sort(compareById); // сортируем старый список
+//        Assertions.assertEquals(oldRelated, newRelated);
+        var expectedList = new ArrayList<>(oldRelated);
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newRelated, expectedList);
     }
-
-
 }

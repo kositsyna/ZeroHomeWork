@@ -190,6 +190,12 @@ public class ContactHelper extends HelperBase {
         returnToHomePage();
     }
 
+    public int notInGroup() {
+        returnToHomePage();
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue("[none]");
+        return getList().size();
+    }
+
     private void addSelectedContact() {
         click(By.xpath("//input[@name=\'add\']"));
     }
