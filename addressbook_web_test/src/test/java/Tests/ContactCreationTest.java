@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 
 public class ContactCreationTest extends TestBase {
@@ -107,40 +108,33 @@ public class ContactCreationTest extends TestBase {
     @Test
     public void canAddContactInGroup() {
 
-        if (app.hbm().getContactCount() == 0  || app.contacts().notInGroup() == 0) {
+        if (app.hbm().getGroupCount() == 0) //Если количество групп = 0, то сначала создаем новую
+        {
+            app.hbm().createGroup(new GroupData("", "Group_Test", "", ""));
+        }
+
+        if (app.hbm().getContactCount() == 0  || app.contacts().notInGroup() == 0) { //Если кол-во контактов 0, или все контакты в группе, то создаем новый
             app.contacts().createContact(new ContactData()
                     .withFname(CommonFunctions.randomString(5))
                     .withLname(CommonFunctions.randomString(6))
                     .withNname(CommonFunctions.randomString(7))
                     .withMname(CommonFunctions.randomString(8)));
         }
-
-        if (app.hbm().getGroupCount() == 0) //Если количество групп = 0, то сначала создаем новую
-        {
-            app.hbm().createGroup(new GroupData("", "", "", ""));
-        }
-
-        var group = app.hbm().getGroupList().get(0);      // выбираем группу
-        var contact = app.hbm().getContactList().get(0);  //выбираем контакт
-               var oldRelated = app.hbm().getContactsInGroup(group);
-
-        if (oldRelated.contains(contact)) {
-            contact = app.hbm().getContactList().get((oldRelated.size()-1));
-            app.contacts().addContactInGroup(contact, group);
-        } else {
-            app.contacts().addContactInGroup(contact, group);
-        }
-
+        
+        var group = app.hbm().getGroupList().get(0);
+        var contacts = app.hbm().getContactList();
+        var id = contacts.size() - 1;
+        var newContact = contacts.get(id);
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        app.contacts().addContactInGroup(newContact, group);
         var newRelated = app.hbm().getContactsInGroup(group);
         Comparator<ContactData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newRelated.sort(compareById);
-//        oldRelated.add(contact);    // добавим контакт в старый список
-//        oldRelated.sort(compareById); // сортируем старый список
-//        Assertions.assertEquals(oldRelated, newRelated);
-        var expectedList = new ArrayList<>(oldRelated);
-        expectedList.sort(compareById);
-        Assertions.assertEquals(newRelated, expectedList);
+        var expected = new ArrayList<>(oldRelated);
+        expected.add(newContact.withId(newRelated.get(newRelated.size() - 1).id()));
+        expected.sort(compareById);
+        Assertions.assertEquals(newRelated, expected);
     }
 }
