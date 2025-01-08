@@ -2,7 +2,10 @@ package Manager.hbm;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+
+import java.util.List;
 
 @Entity
 @Table(name="addressbook")
@@ -31,6 +34,8 @@ public class ContactRecord {
     public String email3 =new String ();
     public String homepage = new String ();
 
+    @ManyToMany(mappedBy = "contacts")
+    public List<GroupRecord> groups;
 
 
     public ContactRecord(){
@@ -59,6 +64,7 @@ public class ContactRecord {
         this.mobile = mobile;
         this.work = work;
         this.phone2 = phone2;
+        this.groups = groups;
     }
 
 

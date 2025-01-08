@@ -113,28 +113,33 @@ public class ContactCreationTest extends TestBase {
             app.hbm().createGroup(new GroupData("", "Group_Test", "", ""));
         }
 
-        if (app.hbm().getContactCount() == 0  || app.contacts().notInGroup() == 0) { //Если кол-во контактов 0, или все контакты в группе, то создаем новый
+        if (app.hbm().getContactCount() == 0 || app.contacts().notInGroup() == 0) { //Если кол-во контактов 0, или все контакты в группе, то создаем новый
             app.contacts().createContact(new ContactData()
                     .withFname(CommonFunctions.randomString(5))
                     .withLname(CommonFunctions.randomString(6))
                     .withNname(CommonFunctions.randomString(7))
                     .withMname(CommonFunctions.randomString(8)));
         }
-        
+
         var group = app.hbm().getGroupList().get(0);
-        var contacts = app.hbm().getContactList();
-        var id = contacts.size() - 1;
-        var newContact = contacts.get(id);
+        var contacts = app.hbm.getContactsNotInGroup();
         var oldRelated = app.hbm().getContactsInGroup(group);
-        app.contacts().addContactInGroup(newContact, group);
+        ContactData newContact = new ContactData();
+
+        if (contacts != null) {
+            newContact = contacts.get(0);
+            app.contacts().addContactInGroup(newContact,group);
+        }
+
+//        app.contacts().addContactInGroup(contacts,group);
+
         var newRelated = app.hbm().getContactsInGroup(group);
         Comparator<ContactData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newRelated.sort(compareById);
-        var expected = new ArrayList<>(oldRelated);
-        expected.add(newContact.withId(newRelated.get(newRelated.size() - 1).id()));
-        expected.sort(compareById);
-        Assertions.assertEquals(newRelated, expected);
+        oldRelated.add(newContact);
+        oldRelated.sort(compareById);
+        Assertions.assertEquals(oldRelated,newRelated);
     }
 }

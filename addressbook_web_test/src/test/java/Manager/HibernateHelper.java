@@ -126,4 +126,18 @@ static List<GroupData> convertListC(List<GroupRecord> records){
 
         }));
     }
+    public List<GroupData> getGroupsByContact(ContactData contactData) {
+        return sessionFactory.fromSession(session -> {
+            return convertListC(session.get(ContactRecord.class, contactData.id()).groups);
+        });
+    }
+
+    public List<ContactData> getContactsNotInGroup() {
+        var allContacts = getContactList();
+        allContacts.removeIf(contactData -> {
+            var groups = getGroupsByContact(contactData);
+            return (groups != null) && (!groups.isEmpty());
+        });
+        return allContacts;
+    }
 }
