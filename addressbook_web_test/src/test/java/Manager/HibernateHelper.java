@@ -140,4 +140,10 @@ static List<GroupData> convertListC(List<GroupRecord> records){
         });
         return allContacts;
     }
+
+    public String getIdContactByName(String firstname) {
+        return sessionFactory.fromSession(session -> {
+            return session.createQuery(String.format("select id from ContactRecord where firstname='%s'", firstname), Integer.class).getSingleResult().toString();
+        });
+    }
 }

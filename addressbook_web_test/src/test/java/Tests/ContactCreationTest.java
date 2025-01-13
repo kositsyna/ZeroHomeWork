@@ -113,22 +113,25 @@ public class ContactCreationTest extends TestBase {
             app.hbm().createGroup(new GroupData("", "Group_Test", "", ""));
         }
 
-        if (app.hbm().getContactCount() == 0 || app.contacts().notInGroup() == 0) { //Если кол-во контактов 0, или все контакты в группе, то создаем новый
-            app.contacts().createContact(new ContactData()
-                    .withFname(CommonFunctions.randomString(5))
-                    .withLname(CommonFunctions.randomString(6))
-                    .withNname(CommonFunctions.randomString(7))
-                    .withMname(CommonFunctions.randomString(8)));
-        }
+        ContactData newContact = null;
 
         var group = app.hbm().getGroupList().get(0);
         var contacts = app.hbm.getContactsNotInGroup();
         var oldRelated = app.hbm().getContactsInGroup(group);
-        ContactData newContact = new ContactData();
 
-        if (contacts != null) {
+
+        if ((contacts != null) && (!contacts.isEmpty())) {
             newContact = contacts.get(0);
             app.contacts().addContactInGroup(newContact,group);
+        }
+
+        if (newContact == null) {
+            app.contacts().createContact(
+                    new ContactData("", "Ivanovna", "Petrova", "Lida87", "Samara,Pobedi Str", "lida87@gmail.ru", "", "", "Lidiya", "", "", "","",""),
+                    group
+            );
+            var contacts1 = app.hbm().getContactsInGroup(group);
+            newContact = contacts1.get(contacts1.size() - 1);
         }
 
 //        app.contacts().addContactInGroup(contacts,group);

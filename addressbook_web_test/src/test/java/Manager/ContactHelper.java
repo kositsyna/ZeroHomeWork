@@ -40,6 +40,13 @@ public class ContactHelper extends HelperBase {
         returnToHomePage();//вернуться на станицу с контактами
     }
 
+    public void createContact(ContactData contact, GroupData group) {
+        initContactCreation();
+        fillContactForm(contact);
+        selectGroup(group);
+        click(By.name("submit"));
+    }
+
     public void createContact2(ContactData contact,GroupData group) {//метод для создания контакта
         openContactPage();//открыть страницу с контактами
         initContactCreation();//открыть форму с новым контактом
