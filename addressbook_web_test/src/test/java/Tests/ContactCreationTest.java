@@ -108,41 +108,41 @@ public class ContactCreationTest extends TestBase {
     @Test
     public void canAddContactInGroup() {
 
-        if (app.hbm().getGroupCount() == 0) //Если количество групп = 0, то сначала создаем новую
-        {
-            app.hbm().createGroup(new GroupData("", "Group_Test", "", ""));
+        // Проверяем, есть ли группы, если нет, создаем одну
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "Group_Test", "Description", "Group Comment"));
         }
 
-        ContactData newContact = null;
-
+        // Получаем список групп и контактов, которые не принадлежат группе
         var group = app.hbm().getGroupList().get(0);
-        var contacts = app.hbm.getContactsNotInGroup();
+
+        // Убедимся, что есть хотя бы один контакт, не привязанный к группе
+        var contactsNotInGroup = app.hbm().getContactsNotInGroup();
+        if (contactsNotInGroup == null || contactsNotInGroup.isEmpty()) {
+            // Если контактов не было, создаем новый контакт, который не привязан к группе
+            ContactData newContact = new ContactData("Ivanovna", "Petrova", "Lida87", "Samara, Pobedi Str",
+                    "lida87@gmail.ru", "", "", "Lidiya", "", "", "", "", "","");
+            app.contacts().createContact(newContact);  // Создаем контакт без привязки к группе
+            contactsNotInGroup = app.hbm().getContactsNotInGroup();  // Обновляем список контактов
+        }
+
+        // Получаем старый список контактов в группе
         var oldRelated = app.hbm().getContactsInGroup(group);
 
+        // Проверяем, что контакты не пустые и можно добавить контакт в группу
+        ContactData newContact = contactsNotInGroup.get(0);
+        app.contacts().addContactInGroup(newContact, group);
 
-        if ((contacts != null) && (!contacts.isEmpty())) {
-            newContact = contacts.get(0);
-            app.contacts().addContactInGroup(newContact,group);
-        }
-
-        if (newContact == null) {
-            app.contacts().createContact(
-                    new ContactData("", "Ivanovna", "Petrova", "Lida87", "Samara,Pobedi Str", "lida87@gmail.ru", "", "", "Lidiya", "", "", "","",""),
-                    group
-            );
-            var contacts1 = app.hbm().getContactsInGroup(group);
-            newContact = contacts1.get(contacts1.size() - 1);
-        }
-
-//        app.contacts().addContactInGroup(contacts,group);
-
+        // Получаем новый список контактов в группе после добавления
         var newRelated = app.hbm().getContactsInGroup(group);
-        Comparator<ContactData> compareById = (o1, o2) -> {
-            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-        };
+
+        // Сортируем оба списка по ID
+        Comparator<ContactData> compareById = (o1, o2) -> Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         newRelated.sort(compareById);
         oldRelated.add(newContact);
         oldRelated.sort(compareById);
-        Assertions.assertEquals(oldRelated,newRelated);
+
+        // Сравниваем старый и новый список контактов в группе
+        Assertions.assertEquals(oldRelated, newRelated);
     }
 }
